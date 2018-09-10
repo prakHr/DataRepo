@@ -11,21 +11,21 @@ myclient=MongoClient("mongodb://localhost:27017")
 mydb=myclient["users"]
 mycollection=mydb["customers"]
 #mydict={ 'dinosaurs': {'lambeosaurus': {'height': 2.1, 'length': 12.5, 'weight': 5000}, 'stegosaurus': {'height': 4, 'length': 1231, 'weight': 131}}, 'users': 213}
-putIntoM#mongoDB(mydb,mycollection,mydict)
+putIntoMmongoDB(mydb,mycollection,mydict)
 #my ip address 192.168.43.101:5000/meter
-#counter=1
-#for i in mycollection.find():
-  #  print(i)
-    #print(counter)
-    #counter+=1
+counter=1
+for i in mycollection.find():
+    print(i)
+    print(counter)
+    counter+=1
 #mydict comes from part 1
 #print(myclient.list_database_names())
 #print(mydb.list_collection_names())
 #collist=mydb.list_collection_names()
-import json
 #mycollection.insert(mydict)#or iterate and insert
 
 #print(mycollection.find())
+    
 #what to write in terminal and hope it works
 #mongo
 #show dbs
