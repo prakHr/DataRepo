@@ -1,5 +1,5 @@
 #part 2
-#how to start mongo,first mongod -sudo mongod --dbpath /var/lib/mongodb
+#how to start mongo,first mongo,sudo mongod --dbpath /var/lib/mongodb
 #2011A3PS090P-Issan bhaiya
 import pymongo
 from pymongo import MongoClient
@@ -11,13 +11,13 @@ myclient=MongoClient("mongodb://localhost:27017")
 mydb=myclient["users"]
 mycollection=mydb["customers"]
 #mydict={ 'dinosaurs': {'lambeosaurus': {'height': 2.1, 'length': 12.5, 'weight': 5000}, 'stegosaurus': {'height': 4, 'length': 1231, 'weight': 131}}, 'users': 213}
-putIntoMongoDB(mydb,mycollection,mydict)
-
-counter=1
-for i in mycollection.find():
-    print(i)
-    print(counter)
-    counter+=1
+putIntoM#mongoDB(mydb,mycollection,mydict)
+#my ip address 192.168.43.101:5000/meter
+#counter=1
+#for i in mycollection.find():
+  #  print(i)
+    #print(counter)
+    #counter+=1
 #mydict comes from part 1
 #print(myclient.list_database_names())
 #print(mydb.list_collection_names())
