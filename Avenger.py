@@ -1,4 +1,4 @@
-#import pprint
+from pprint import pprint
 #part 1 comes from CatchingFire(codeName for Firebase)
 import firebase_admin
 from firebase_admin import credentials
@@ -34,7 +34,7 @@ cursor=mycollection.find({})#mycollection comes from part 2
 myarray=[]
 for content in cursor:
     myarray.append(content)
-print(myarray)
+pprint(myarray)
 
 import json
 from bson import Binary,Code
@@ -44,7 +44,7 @@ class kiranacountClass:
         resp.status=falcon.HTTP_200
         resp.body=dumps(myarray)
         
-import falcon
+import falcon#http://127.0.0.1:5000/meter
 app=falcon.API()
 #kiranacount = myarray
 #print("kiranacount=>",kiranacount)
