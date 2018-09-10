@@ -11,7 +11,7 @@ myclient=MongoClient("mongodb://localhost:27017")
 mydb=myclient["users"]
 mycollection=mydb["customers"]
 #mydict={ 'dinosaurs': {'lambeosaurus': {'height': 2.1, 'length': 12.5, 'weight': 5000}, 'stegosaurus': {'height': 4, 'length': 1231, 'weight': 131}}, 'users': 213}
-putIntoMmongoDB(mydb,mycollection,mydict)
+putIntoMongoDB(mydb,mycollection,mydict)
 #my ip address 192.168.43.101:5000/meter
 counter=1
 for i in mycollection.find():
