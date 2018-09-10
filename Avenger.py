@@ -1,5 +1,5 @@
 from pprint import pprint
-#part 1 comes from CatchingFire(codeName for Firebase)
+'''#part 1 comes from CatchingFire(codeName for Firebase)
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
@@ -28,7 +28,7 @@ def get_db():
 mydb=get_db()
 mycollection=mydb["customers"]
 putIntoMongoDB(mydb,mycollection,mydict)
-
+'''
 #part 3 comes from here i.e. Avenger(codeName for Falcon)
 cursor=mycollection.find({})#mycollection comes from part 2
 myarray=[]
