@@ -36061,10 +36061,7 @@ print("This Kirana uses this many items from barcodeInventory=>")
 print(barcodeItems)
 print(len(barcodeItems))#gives length of barcodeItems that is present in barcodeInventory    
 
-#for item in myarray1:#can't be optimised as barcodeNumber needs to be sorted then binary search but barcodeNumber format
-  #  for barcode in arrayToBeSearched:
-    #    if barcode==item:
-      #      print(barcode)#isParticular kirana ke paas ye waale barcodes hai but agar 100 kiranas hoge toh
-        #    break
+#is Particular kirana ke paas ye waale barcodes hai but agar 100 kiranas hoge toh
+  
     
 
