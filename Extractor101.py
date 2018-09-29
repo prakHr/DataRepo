@@ -26,7 +26,7 @@ ArrayToBeKeepedIn=[]
 for doc in docs:
     ArrayToBeKeepedIn.append(doc.id)
     
-#print(ArrayToBeKeepedIn)
+print(ArrayToBeKeepedIn)
 SecondArray,num=[],0
 for i in (ArrayToBeKeepedIn):
     num+=1
@@ -71,8 +71,8 @@ def setDataCopiedFromExtractedAbove(ArrayToBeKeepedIn,SecondArray,cred):#some na
             num+=1
             i+=1
             continue#https://cloud.google.com/firestore/docs/manage-data/add-data
-            
-        db.collection(u'Kiranas').document(ArrayToBeKeepedIn[i]).collection(u'Barcodes').document(Second[0]).set(Second[1])#set overwrites the data
+        if ArrayToBeKeepedIn[i] in ['Jain_Departmental_Store','Navkar_Store']:
+            db.collection(u'Kiranas').document(ArrayToBeKeepedIn[i]).collection(u'Barcodes').document(Second[0]).set(Second[1])#set overwrites the data
            
     delete_app(app)
     
