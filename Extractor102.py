@@ -45,8 +45,6 @@ for i in ArrayToBeKeepedIn:#iterates through the array
                 #print(u'{} => {}'.format(stockDocuments.id, stockDocuments.to_dict()))
                 db1.collection(u'Kiranas').document(i).collection(u'SpeechItems').document(docu.id).collection(u'speechInventoryPrice').document(docu2.id).collection(u'stockcollection').document(stockDocuments.id).set(stockDocuments.to_dict())
 
- 
-
             #collection Kirana=>document(Navkar)=>collection speechItems=>random documents=>collection speechInventoryPrice=>random documents=>pricecollection,stockcollection
            
             
