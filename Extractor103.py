@@ -22,17 +22,22 @@ def Extractor(reference):
         array.append([doc.id,doc.to_dict()])
     return array
 
-ref1=db.collection(u'barcode_inventory')
-Barcodes=Extractor(ref1)
-#print(Barcodes)
-ref2=db.collection(u'barcode_repeats')
-BarcodeRepeats=Extractor(ref2)
-#print(BarcodeRepeats)
-ref3=db.collection(u'speech_inventory')
-SpeechInventory=Extractor(ref3)
-ref4=db.collection(u'tags_inventory')
+#Function has same functionality as Extractor function
+def iterator(collection):
+    array=[]
+    for documents in collection:
+        array.append([document.id,document.to_dict()])
+    return array
 
-ref5=db.collection(u'unlisted_barcode_inventory')
-UnlistedBarcodes=Extractor(ref5)
-
-ref6=db.collection(u'users')#documents=>barcode_inventory,bills,customers_speech_inventory
+ref1,ref2,ref3,ref4,ref5=db.collection(u'barcode_inventory'),db.collection(u'barcode_repeats'),db.collection(u'speech_inventory'),db.collection(u'tags'),db.collection(u'unlisted_barcode_inventory')
+BarcodesList,BarcodeRepeatsList,SpeechInventoryList,tagsList,UnlistedBarcodesList=Extractor(ref1),Extractor(ref2),Extractor(ref3),Extractor(ref4),Extractor(ref5)
+#print(BarcodesList,BarcodeRepeatsList,SpeechInventoryList,tagsList,UnlistedBarcodesList)
+ref6=db.collection(u'users')#documents=>collections(barcode_inventory,bills,customers_speech_inventory)
+UserLists=Extractor(ref6)
+docsOfRef6=ref6.get()
+=[],[],[],[]
+for doc in docsOfRef6:
+    a_collection,b_collection,c_collection,d_collection=db.collection(u'users').doc(doc.id).collection(u'barcode_inventory').get(),db.collection(u'users').doc(doc.id).collection(u'bills').get(),db.collection(u'users').doc(doc.id).collection(u'customers').get(),db.collection(u'users').doc(doc.id).collection(u'speech_inventory').get()
+    arrayA,arrayB,arrayC,arrayD=iterator(a_collection),iterator(b_collection),iterator(c_collection),iterator(d_collection)
+    #print(arrayA,arrayB,arrayC,arrayD)    
+    
