@@ -20,7 +20,7 @@ ArrayToBeKeepedIn=[]
 for doc in docs:
     ArrayToBeKeepedIn.append(doc.id)
     
-print(ArrayToBeKeepedIn)
+#print(ArrayToBeKeepedIn)
 SecondArray,num=[],0
 for i in (ArrayToBeKeepedIn):
     num+=1
