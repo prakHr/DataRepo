@@ -2,6 +2,9 @@ import firebase_admin
 from firebase_admin import *
 from firebase_admin import firestore
 import json
+#!/usr/bin/env python3
+
+
 
 #Credentials of project1 and project2 is required
 cred1=credentials.Certificate("python-78039-firebase-adminsdk-mthis-66f13748f8.json")
@@ -19,13 +22,21 @@ db1=extractDatabase(cred2)
 users_ref=db.collection(u'Kiranas')#takes the collection
 docs=users_ref.get()
 ArrayToBeKeepedIn=[]#Array takes the random name of documents
+flags=[]
 for doc in docs:
+    dictionaryOfDoc=doc.to_dict()
+    #print(dictionaryOfDoc['check'])
+    flags.append(dictionaryOfDoc['check'])
     db1.collection(u'Kiranas').document(doc.id).set(doc.to_dict())
     ArrayToBeKeepedIn.append(doc.id)
 #print(ArrayToBeKeepedIn)
-SecondArray,num=[],0
+SecondArray,flagLen,num=[],0,0
 for i in ArrayToBeKeepedIn:#iterates through the array
     #if i =='Navkar_store':#Since Navkar_store has speechCollection
+    if flags[flagLen]=='false' or flags[flagLen]=='False' or flags[flagLen]==0 or flags[flagLen]=='0':
+        flagLen+=1
+        continue
+    flagLen+=1
     num+=1
     SpeechCollections=db.collection(u'Kiranas').document(i).collection(u'SpeechItems').get()#takes all the documents(Id and data) from SpeechItems collection
     
