@@ -1,6 +1,8 @@
 #Q. A particular barcodeNumber exists in how many users ?(ListOfList) Done from UnlistedBarcodeInventory,users
 #Q.Active/Inactive?(Done) from users
-#Q.Total Number of bills sold
+#Q.Total Number of bills sold(Done)
+#Q.Barcode Price for a particular Kirana(Done)
+#In a Time Range
 import firebase_admin
 from firebase_admin import *
 from firebase_admin import firestore
@@ -38,12 +40,13 @@ BarcodesList,BarcodeRepeatsList,SpeechInventoryList,tagsList,unlistedBarcodesLis
 #print('len(tagsList),tagsList=>',len(tagsList),tagsList)
 #print('len(UnlistedBarcodesList),UnlistedBarcodesList=>'len(UnlistedBarcodesList),unlistedBarcodesList)
 
-'''#print('len(BarcodesList) =>',len(BarcodesList))
-#print('len(BarcodeRepeatsList)=>',len(BarcodeRepeatsList))
-#print('len(SpeechInventoryList)=>',len(SpeechInventoryList))
-#print('len(tagsList)=>',len(tagsList))
-#print('len(UnlistedBarcodesList)=>'len(unlistedBarcodesList))
-'''
+print('len(BarcodesList) =>',len(BarcodesList))
+print('len(BarcodeRepeatsList)=>',len(BarcodeRepeatsList))
+print('len(SpeechInventoryList)=>',len(SpeechInventoryList))
+print('len(tagsList)=>',len(tagsList))
+print('len(unlistedBarcodesList)=>',len(unlistedBarcodesList))
+
+BarcodesPrices={}
 BarcodePriceSum=0
 BarcodeNumberSet=set()
 for Barcodes in BarcodesList:
@@ -51,17 +54,18 @@ for Barcodes in BarcodesList:
     if 'timeStamp' in dic:
         timestamp=dic['timeStamp']
     if 'barcodePrice' in dic:
+        BarcodesPrices[barcodes]=dic['barcodePrice']
         BarcodePriceSum+=dic['barcodePrice']
     BarcodeNumberSet.add(barcodes)
 
-'''#print('BarcodePriceSum=>',BarcodePriceSum)'''
+print('BarcodePriceSum=>',BarcodePriceSum)
 usersPhoneNoSet=set()
 for users in unlistedBarcodesList:
     dic=users[1]
     if 'user' in dic:
         usersPhoneNoSet.add(dic['user'])
 #print('usersPhoneNoSet=>',usersPhoneNoSet)
-'''#print('len(usersPhoneNoSet)=>',len(usersPhoneNoSet))'''
+print('len(usersPhoneNoSet)=>',len(usersPhoneNoSet))
 ans=[]
 for PhoneNo in usersPhoneNoSet:
     for documents in unlistedBarcodesList:
@@ -70,8 +74,8 @@ for PhoneNo in usersPhoneNoSet:
             TotalBarcodesList.append(barcodeNumber)
     ans.append([len(TotalBarcodesList),TotalBarcodesList,PhoneNo])
 
-'''print('TotalBarcodesListOfList common in used by unlistedBarcodeInventory used by users',ans)
-'''
+print('TotalBarcodesListOfList common in used by unlistedBarcodeInventory used by users',ans)
+
 category0,category1,category2,category3=0,0,0,0
 for SpeechInventory in SpeechInventoryList:
     dic=SpeechInventory[1]
@@ -80,7 +84,8 @@ for SpeechInventory in SpeechInventoryList:
         elif dic['category']=="1":category1+=1
         elif dic['category']=="2":category2+=1
         elif dic['category']=="3":category3+=1
-'''print('Total items categorywise ',category0,category1,category2,category3)'''
+print('Total items categorywise ',category0,category1,category2,category3)
+
 ref6=db.collection(u'users')#documents=>collections(barcode_inventory,bills,customers_speech_inventory)
 UserLists=Extractor(ref6)
 lastUsedTime,timestamp,docsOfRef6=0,0,ref6.get()
@@ -94,17 +99,22 @@ for doc in docsOfRef6:
     if len(str(lastUsedTime))==13:
         lastUsedTime=lastUsedTime//1000
 
-    '''print('User {} is last active on {} '.format(user,time.ctime(lastUsedTime)))
-    '''
+    print('User {} is last active on {} '.format(user,time.ctime(lastUsedTime)))
+
     a_collection,b_collection,c_collection,d_collection=db.collection(u'users').document(doc.id).collection(u'barcode_inventory').get(),db.collection(u'users').document(doc.id).collection(u'bills').get(),db.collection(u'users').document(doc.id).collection(u'customers').get(),db.collection(u'users').document(doc.id).collection(u'speech_inventory').get()
     arrayA,arrayB,arrayC,arrayD=iterator(a_collection),iterator(b_collection),iterator(c_collection),iterator(d_collection)
-    '''print("User {} uses {} bills".format(user,len(arrayB)))'''
+    print("User {} uses {} bills".format(user,len(arrayB)))
     for a in arrayA:
         barcode,dic=a[0],a[1]
         if 'barcodeName' in dic:
             barcodeName.add(dic['barcodeName'])
         barcodeSet.add(barcode)
-    '''print('User {} uses {} barcodes'.format(user,len(barcodeSet)))'''
+    print('User {} uses {} barcodes'.format(user,len(barcodeSet)))
+    price=0
+    for b in barcodeSet:
+        if b in BarcodesPrices:
+            price+=BarcodesPrices[b]
+    print('Total amount of barcode Price of User {} till {} is {}'.format(user,time.ctime(lastUsedTime),price))
     ans.append([user,barcodeSet,barcodeName])
     barcodeSet=set()
     #print(arrayA,arrayB,arrayC,arrayD)
@@ -118,9 +128,9 @@ for doc in docsOfRef6:
         for [a,b] in arrayAA:
             if 'billTableItemName' in b:
                 billsItem.add(b['billTableItemName'])
-    '''print('User {} uses billItems set {}'.format(user,billsItem))'''
-    '''print('Total length of billItemSet => ',len(billsItem))'''
+    print('User {} uses billItems set {}'.format(user,billsItem))
+    print('Total length of billItemSet => ',len(billsItem))
 
     billsItem=set()
-        
+
 print('ListOfList=>',ans)
