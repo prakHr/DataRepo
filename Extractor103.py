@@ -54,6 +54,8 @@ for Barcodes in BarcodesList:
     if 'timeStamp' in dic:
         timestamp=dic['timeStamp']
     if 'barcodePrice' in dic:
+        if dic['barcodePrice']>5000:#outliers exists so making values greater than 5000=>null
+            dic['barcodePrice']=0
         BarcodesPrices[barcodes]=dic['barcodePrice']
         BarcodePriceSum+=dic['barcodePrice']
     BarcodeNumberSet.add(barcodes)
@@ -64,7 +66,7 @@ for users in unlistedBarcodesList:
     dic=users[1]
     if 'user' in dic:
         usersPhoneNoSet.add(dic['user'])
-#print('usersPhoneNoSet=>',usersPhoneNoSet)
+print('usersPhoneNoSet=>',usersPhoneNoSet)
 print('len(usersPhoneNoSet)=>',len(usersPhoneNoSet))
 ans=[]
 for PhoneNo in usersPhoneNoSet:
@@ -74,7 +76,7 @@ for PhoneNo in usersPhoneNoSet:
             TotalBarcodesList.append(barcodeNumber)
     ans.append([len(TotalBarcodesList),TotalBarcodesList,PhoneNo])
 
-print('TotalBarcodesListOfList common in used by unlistedBarcodeInventory used by users',ans)
+#print('TotalBarcodesListOfList common in used by unlistedBarcodeInventory used by users',ans)
 
 category0,category1,category2,category3=0,0,0,0
 for SpeechInventory in SpeechInventoryList:
