@@ -54,8 +54,7 @@ for Barcodes in BarcodesList:
     if 'timeStamp' in dic:
         timestamp=dic['timeStamp']
     if 'barcodePrice' in dic:
-        if dic['barcodePrice']>5000:#outliers exists so making values greater than 5000=>null
-            dic['barcodePrice']=0
+        if dic['barcodePrice']>5000:dic['barcodePrice']=0#outliers exists so making values greater than 5000=>null
         BarcodesPrices[barcodes]=dic['barcodePrice']
         BarcodePriceSum+=dic['barcodePrice']
     BarcodeNumberSet.add(barcodes)
@@ -86,7 +85,7 @@ for SpeechInventory in SpeechInventoryList:
         elif dic['category']=="1":category1+=1
         elif dic['category']=="2":category2+=1
         elif dic['category']=="3":category3+=1
-print('Total items categorywise ',category0,category1,category2,category3)
+print('Total items categorywise in category 0/1/2/3 =>',category0,category1,category2,category3)
 
 ref6=db.collection(u'users')#documents=>collections(barcode_inventory,bills,customers_speech_inventory)
 UserLists=Extractor(ref6)
