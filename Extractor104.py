@@ -9,7 +9,7 @@ cred2=credentials.Certificate("project1-4e7b7-firebase-adminsdk-7irgt-433da006ab
 def extractDatabase(cred):
     app=firebase_admin.initialize_app(cred)
     db=firestore.client()
-    delete_app(app)#instance of app is deleted to reuse again
+    delete_app(app)
     return db
 
 db= extractDatabase(cred1)
