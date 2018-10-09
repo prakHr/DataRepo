@@ -36,15 +36,9 @@ def storesDocumentIdIntoArrayAndSetsDatabase(collection,reference,database):
         array.append(doc.id)
         database.collection(collection).document(doc.id).set(doc.to_dict())
     return array
-#collection3 is remaining
-'''
-#SimplePutIntoCollection(collection1,ref1,db1)
-#SimplePutIntoCollection(collection2,ref1,db1)
-#SimplePutIntoCollection(collection4,ref1,db1)
-#SimplePutIntoCollection(collection5,ref1,db1)
-#SimplePutIntoCollection(collection6,ref1,db1)
-#SimplePutIntoCollection(collection7,ref1,db1)
-'''
+
+SimplePutIntoCollection(collection1,ref1,db1),SimplePutIntoCollection(collection2,ref1,db1),SimplePutIntoCollection(collection4,ref1,db1),SimplePutIntoCollection(collection5,ref1,db1),SimplePutIntoCollection(collection6,ref1,db1),SimplePutIntoCollection(collection7,ref1,db1)
+
 billsArray=storesDocumentIdIntoArrayAndSetsDatabase(collection3,ref3,db1)
 for randomID in billsArray:
     DocumentsOfBillsCollection=db.collection(collection3).document(randomID).collection(billsCollection1).get()
