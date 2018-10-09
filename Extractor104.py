@@ -15,7 +15,7 @@ def extractDatabase(cred):
 db= extractDatabase(cred1)
 db1=extractDatabase(cred2)
 
-collection1,collection2,collection3,collection4,collection5,collection6,collection7,collection8=u'barcode_inventory',u'barcode_repeats',u'bills',u'customers',u'speech_inventory',u'tags',u'unlisted_barcode_inventory',u'users'
+collection1,collection2,collection3,collection4,collection5,collection6,collection7,collection8,collection9=u'barcode_inventory',u'barcode_repeats',u'bills',u'customers',u'speech_inventory',u'tags',u'unlisted_barcode_inventory',u'users',u'barcode_repeats'
 usersCollection1,usersCollection2,usersCollection3,usersCollection4=collection1,collection3,collection4,collection5
 billsCollection1=u'sold'
 collectionsOfUsersCollection3=[u'payment',u'paid',u'udhaar']
@@ -23,7 +23,7 @@ collectionOfUsersCollection2=u'sold'
 collectionsOfUsersCollection4=u'speechInventoryPrice'
 collectionOfSpeechInventoryPrice=u'records'
 collectionOfRecords=[u'price',u'stock']
-ref1,ref2,ref3,ref4,ref5,ref6,ref7,ref8=db.collection(collection1),db.collection(collection2),db.collection(collection3),db.collection(collection4),db.collection(collection5),db.collection(collection6),db.collection(collection7),db.collection(collection8)
+ref1,ref2,ref3,ref4,ref5,ref6,ref7,ref8,ref9=db.collection(collection1),db.collection(collection2),db.collection(collection3),db.collection(collection4),db.collection(collection5),db.collection(collection6),db.collection(collection7),db.collection(collection8),db.collection(collection9)
 
 def SimplePutIntoCollection(collection,reference,database):
     docs=reference.get()
@@ -37,7 +37,8 @@ def storesDocumentIdIntoArrayAndSetsDatabase(collection,reference,database):
         database.collection(collection).document(doc.id).set(doc.to_dict())
     return array
 
-SimplePutIntoCollection(collection1,ref1,db1),SimplePutIntoCollection(collection2,ref1,db1),SimplePutIntoCollection(collection4,ref1,db1),SimplePutIntoCollection(collection5,ref1,db1),SimplePutIntoCollection(collection6,ref1,db1),SimplePutIntoCollection(collection7,ref1,db1)
+SimplePutIntoCollection(collection9,ref9,db1)
+SimplePutIntoCollection(collection1,ref1,db1),SimplePutIntoCollection(collection2,ref2,db1),SimplePutIntoCollection(collection4,ref4,db1),SimplePutIntoCollection(collection5,ref5,db1),SimplePutIntoCollection(collection6,ref6,db1),SimplePutIntoCollection(collection7,ref7,db1)
 
 billsArray=storesDocumentIdIntoArrayAndSetsDatabase(collection3,ref3,db1)
 for randomID in billsArray:
