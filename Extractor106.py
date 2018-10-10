@@ -43,45 +43,43 @@ kiranaNamesSet=ExtractorOfKiranaNames(ref)
 #print(kiranaNamesSet)
 #{ 'vardhman', 'Saral Store', 'Mahesh Kirana', 'Variety Grain', 'Kumawat Store', 'Nishant Store', 'Jain Departmental', 'Sample Bills', 'Kanha Store', 'Kamlesh Kirana', 'RadheShyam', 'Shubham Kira', 'sagar provision store', 'Apni Kirana', 'Chawla Store', 'chouhan kirana', 'SB Enterprises', 'Vinodji', 'awesome'}
 
-arrayTupleOfNamesAndBills=[]
+arrayOfNamesAndBillsAndSpeechItemsAndBarcodeItemsAndlastUsedTimeAndtimeStamp=[]
 #Total No of bills of kirana in kiranaNamesSet
 for k in kiranaNamesSet:
-    total=0
+    total,totalBarcodes,totalSpeechInventory=0,0,0
     for doc in UsersArray:
+        
+        barcode_inventory_collection=db.collection(u'users').document(doc[0]).collection(u'barcode_inventory').get()
         bills_collection=db.collection(u'users').document(doc[0]).collection(u'bills').get()
+        speech_inventory_collection=db.collection(u'users').document(doc[0]).collection(u'speech_inventory').get()
+        
+        barcodes=lengthOfCollection(barcode_inventory_collection)
         bills=lengthOfCollection(bills_collection)
+        speechItems=lengthOfCollection(speech_inventory_collection)
+        
         if 'kiranaName' in doc[1]:
+            if 'lastUsed' in doc[1]:
+                lastUsedTime=doc[1]['lastUsed']
+                if len(str(lastUsedTime))==13:
+                    lastUsedTime//=1000
+                    l=time.ctime(lastUsedTime)
+
+            if 'timestamp' in doc[1]:
+                timeStamp=doc[1]['timestamp']
+                if len(str(timeStamp))==13:
+                    timeStamp//=1000
+                    s=time.ctime(timeStamp)
+
             current_owner=doc[1]['kiranaName']
         if k==current_owner:
+            totalBarcodes+=barcodes
             total+=bills
-    print(k,total)
-    arrayTupleOfNamesAndBills.append([k,total])
+            totalSpeechInventory+=speechItems
+            
+    print(k,total,totalBarcodes,totalSpeechInventory,l,s)
+    arrayOfNamesAndBillsAndSpeechItemsAndBarcodeItemsAndlastUsedTimeAndtimeStamp.append([k,total,totalBarcodes,totalSpeechInventory,l,s])
     #find the length of bills collection for users
-print(arrayTupleOfNamesAndBills)
-'''
-Mahesh Kirana 7
-vardhman 47
-Saral Store 13
-RadheShyam 5
-awesome 169
-Chawla Store 9
-Variety Grain 43
-Kanha Store 15
-Jain Departmental 23
-Shubham Kira 36
-sagar provision store 106
-Kanha Store 15
-Nishant Store 2
-Vinodji 1
-Sample Bills 1
-Kumawat Store 16
-Apni Kirana 24
-SB Enterprises 15
-chouhan kirana 23
-Kamlesh Kirana 14
-[['Mahesh Kirana', 7], ['vardhman', 47], ['Saral Store', 13], ['RadheShyam', 5], ['awesome', 169], ['Chawla Store', 9], ['Variety Grain', 43], 
-['Kanha Store', 15], ['Jain Departmental', 23], ['Shubham Kira', 36], ['sagar provision store', 106], ['Nishant Store', 2], ['Vinodji', 1], ['S
-ample Bills', 1], ['Kumawat Store', 16], ['Apni Kirana', 24], ['SB Enterprises', 15], ['chouhan kirana', 23], ['Kamlesh Kirana', 14]]
-'''
-    
+print(arrayOfNamesAndBillsAndSpeechItemsAndBarcodeItemsAndlastUsedTimeAndtimeStamp)
+#Date last used and kirana timestamp
+
 
