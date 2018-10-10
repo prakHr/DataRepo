@@ -1,3 +1,4 @@
+#took 1276 secs=>convert into time 21.266
 import firebase_admin
 from firebase_admin import *
 from firebase_admin import firestore
@@ -15,6 +16,7 @@ def extractDatabase(cred):
 db= extractDatabase(cred1)
 db1=extractDatabase(cred2)
 
+#all the names of known collection stored in variables
 collection1,collection2,collection3,collection4,collection5,collection6,collection7,collection8,collection9=u'barcode_inventory',u'barcode_repeats',u'bills',u'customers',u'speech_inventory',u'tags',u'unlisted_barcode_inventory',u'users',u'barcode_repeats'
 usersCollection1,usersCollection2,usersCollection3,usersCollection4=collection1,collection3,collection4,collection5
 billsCollection1=u'sold'
@@ -25,11 +27,14 @@ collectionOfSpeechInventoryPrice=u'records'
 collectionOfRecords=[u'price',u'stock']
 ref1,ref2,ref3,ref4,ref5,ref6,ref7,ref8,ref9=db.collection(collection1),db.collection(collection2),db.collection(collection3),db.collection(collection4),db.collection(collection5),db.collection(collection6),db.collection(collection7),db.collection(collection8),db.collection(collection9)
 
+#function takes pair of (random documentsID,key-value pair from Add field) from main collections that don't contain subcollections
+#Output=>sets the values of main collection in another project
 def SimplePutIntoCollection(collection,reference,database):
     docs=reference.get()
     for doc in docs:
         database.collection(collection).document(doc.id).set(doc.to_dict())
 
+#function stores the id of random documents present in main-collection's into array
 def storesDocumentIdIntoArrayAndSetsDatabase(collection,reference,database):
     docs,array=reference.get(),[]
     for doc in docs:
@@ -40,6 +45,7 @@ def storesDocumentIdIntoArrayAndSetsDatabase(collection,reference,database):
 SimplePutIntoCollection(collection9,ref9,db1)
 SimplePutIntoCollection(collection1,ref1,db1),SimplePutIntoCollection(collection2,ref2,db1),SimplePutIntoCollection(collection4,ref4,db1),SimplePutIntoCollection(collection5,ref5,db1),SimplePutIntoCollection(collection6,ref6,db1),SimplePutIntoCollection(collection7,ref7,db1)
 
+#with the help of arrays, and the known names of subcollections repeated the process for it like main-collection's but this time we need not put into array
 billsArray=storesDocumentIdIntoArrayAndSetsDatabase(collection3,ref3,db1)
 for randomID in billsArray:
     DocumentsOfBillsCollection=db.collection(collection3).document(randomID).collection(billsCollection1).get()
