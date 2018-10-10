@@ -35,18 +35,19 @@ from bson.json_util import dumps
 
 class KiranasClass:
     def on_get(self,req,resp):
-        resp.status=falcon.HTTP_200
         resp.body=dumps(myarray)
-
+        resp.status=falcon.HTTP_200#request maybe overridden as needed
+        
 import falcon
-app=falcon.API()
+app=application=api=falcon.API()
 app.add_route('/Kiranas',KiranasClass())
 #myarray needs to be added here
 myarray=mehboobsList
 
 class MehboobsClass:
     def on_get(self,req,resp):
-        resp.status=falcon.HTTP_200
         resp.body=dumps(myarray)
+        resp.status=falcon.HTTP_200
+        
 #go to http://127.0.0.1:5000/Mehboobs using gunicorn -b 0.0.0.0:5000 Extractor105:app --reload
 app.add_route('/Mehboobs',MehboobsClass())
