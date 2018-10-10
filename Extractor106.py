@@ -3,7 +3,30 @@ from firebase_admin import *
 from firebase_admin import firestore
 
 cred1=credentials.Certificate("munshik3-46360-firebase-adminsdk-d1ymf-4358fc0962.json")
+'''
+Name,Bills,Barcodes,SpeechItems,Date last used and kirana timestamp
 
+chouhan kirana 24 4 1778 Sat Oct  6 08:19:51 2018 Sat Aug 25 11:42:05 2018
+Vinodji 1 1024 589 Sat Oct  6 08:19:51 2018 Sat Aug 25 11:42:05 2018
+RadheShyam 5 4298 589 Sat Oct  6 08:19:51 2018 Sat Aug 25 11:42:05 2018
+Kamlesh Kirana 14 118 600 Sat Oct  6 08:19:51 2018 Sat Aug 25 11:42:05 2018
+Kanha Store 15 1149 742 Sat Oct  6 08:19:51 2018 Sat Aug 25 11:42:05 2018
+SB Enterprises 15 659 543 Sat Oct  6 08:19:51 2018 Sat Aug 25 11:42:05 2018
+sagar provision store 106 1294 2099 Sat Oct  6 08:19:51 2018 Sat Aug 25 11:42:05 2018
+Shubham Kira 36 1201 1830 Sat Oct  6 08:19:51 2018 Sat Aug 25 11:42:05 2018
+Chawla Store 9 434 1319 Sat Oct  6 08:19:51 2018 Sat Aug 25 11:42:05 2018
+Sample Bills 1 1 442 Sat Oct  6 08:19:51 2018 Sat Aug 25 11:42:05 2018
+Mahesh Kirana 7 279 595 Sat Oct  6 08:19:51 2018 Sat Aug 25 11:42:05 2018
+Variety Grain 43 4 1917 Sat Oct  6 08:19:51 2018 Sat Aug 25 11:42:05 2018
+vardhman 47 365 1803 Sat Oct  6 08:19:51 2018 Sat Aug 25 11:42:05 2018
+Kumawat Store 16 610 718 Sat Oct  6 08:19:51 2018 Sat Aug 25 11:42:05 2018
+Nishant Store 2 1 0 Sat Oct  6 08:19:51 2018 Sat Aug 25 11:42:05 2018
+Apni Kirana 24 4429 589 Sat Oct  6 08:19:51 2018 Sat Aug 25 11:42:05 2018
+Saral Store 13 576 597 Sat Oct  6 08:19:51 2018 Sat Aug 25 11:42:05 2018
+Jain Departmental 23 1628 581 Sat Oct  6 08:19:51 2018 Sat Aug 25 11:42:05 2018
+awesome 169 8 124 Sat Oct  6 08:19:51 2018 Sat Aug 25 11:42:05 2018
+
+'''
 def extractFromFirebase(cred):
     app=firebase_admin.initialize_app(cred)
     db=firestore.client()
@@ -80,6 +103,6 @@ for k in kiranaNamesSet:
     arrayOfNamesAndBillsAndSpeechItemsAndBarcodeItemsAndlastUsedTimeAndtimeStamp.append([k,total,totalBarcodes,totalSpeechInventory,l,s])
     #find the length of bills collection for users
 print(arrayOfNamesAndBillsAndSpeechItemsAndBarcodeItemsAndlastUsedTimeAndtimeStamp)
-#Date last used and kirana timestamp
+
 
 
