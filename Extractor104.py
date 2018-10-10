@@ -3,7 +3,9 @@ import firebase_admin
 from firebase_admin import *
 from firebase_admin import firestore
 import time
+from datetime import timedelta
 
+start_time=time.time()
 cred1=credentials.Certificate("python-78039-firebase-adminsdk-mthis-66f13748f8.json")
 cred2=credentials.Certificate("project1-4e7b7-firebase-adminsdk-7irgt-433da006ab.json")
 
@@ -105,6 +107,8 @@ for randomID in usersArray:
                 for docuDashDashDash2 in StockDocuments:
                     db1.collection(collection8).document(randomID).collection(usersCollection4).document(doc.id).collection(collectionsOfUsersCollection4).document(docuDash.id).collection(collectionOfSpeechInventoryPrice).document(docuDashDash.id).collection(collectionOfRecords[0]).document(docuDashDashDash2.id).set(docuDashDashDash2.to_dict())
                 
-                
+elapsed_time_secs=time.time()-start_time
+message="Execution took: %s secs" % timedelta(seconds=round(elapsed_time_secs))
+print(message)                
         
     
