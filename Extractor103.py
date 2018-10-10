@@ -7,7 +7,9 @@ import firebase_admin
 from firebase_admin import *
 from firebase_admin import firestore
 import time
+from datetime import timedelta
 
+start_time=time.time()
 cred1=credentials.Certificate("munshik3-46360-firebase-adminsdk-d1ymf-4358fc0962.json")
 
 def extractFromFirebase(cred):
@@ -135,3 +137,6 @@ for doc in docsOfRef6:
     billsItem=set()
 
 print('ListOfList=>',ans)
+elapsed_time_secs=time.time()-start_time
+message="Execution took: %s secs" % timedelta(seconds=round(elapsed_time_secs))
+print(message)        
