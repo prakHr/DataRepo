@@ -4,7 +4,6 @@ from firebase_admin import firestore
 import time
 
 cred1=credentials.Certificate("munshik3-46360-firebase-adminsdk-d1ymf-4358fc0962.json")
-#timeStamp apparently is calculated wrong or needed to fix(no idea right now)
 
 def extractFromFirebase(cred):
     app=firebase_admin.initialize_app(cred)
