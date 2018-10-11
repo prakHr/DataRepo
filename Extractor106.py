@@ -3,7 +3,7 @@ from firebase_admin import *
 from firebase_admin import firestore
 
 cred1=credentials.Certificate("munshik3-46360-firebase-adminsdk-d1ymf-4358fc0962.json")
-#timestamp and lastUsed apparently is calculated wrong or needed to fix
+#timestamp and lastUsed apparently is calculated wrong or needed to fix(no idea right now)
 
 '''
 PhoneNos,Name,Bills,Barcodes,SpeechItems,Date last used and kirana timestamp
@@ -49,6 +49,7 @@ def ExtractorOfKiranaNamesAndCorrespondingPhones(reference):
             Set.add((mydict['kiranaName'],doc.id))  
     return Set
 
+#function saves id and data-fields into array from reference node of the tree in firestore and return that array
 def Extractor(reference):
     docs=reference.get()
     array=[]
@@ -56,6 +57,7 @@ def Extractor(reference):
         array.append([doc.id,doc.to_dict()])
     return array
 
+#function gives total no of documents in main collections for ex. users
 def lengthOfCollection(collection):
     length=0
     for docs in collection:
