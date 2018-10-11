@@ -4,6 +4,7 @@ from firebase_admin import firestore
 import time
 '''
 PhoneNos,Name,Bills,Barcodes,SpeechItems,Date last used and kirana timestamp
+
 +917742466334 chouhan kirana 24 4 1778 Wed Oct 10 17:19:53 Tue Oct  9 08:02:09 2018
 +919166025226 Vinodji 1 1024 589 Thu Oct 11 06:23:25 Fri Aug 17 05:37:57 2018
 +918290023496 RadheShyam 5 4298 589 Thu Sep 13 06:29:17 Thu Sep 13 06:27:25 2018
