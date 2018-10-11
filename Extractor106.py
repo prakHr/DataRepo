@@ -25,6 +25,7 @@ PhoneNos,Name,Bills,Barcodes,SpeechItems,Date last used and kirana timestamp
 +919011752453 Jain Departmental(has 2 phones) 23 1628 581(need to work here) Thu Aug 16 07:05:15 2018
 (+919829931177 for jain departmental store ) Wed Oct 10 11:32:10 2018
 +919777688639 awesome 169 8 124 Thu Oct 11 06:34:30 Mon Sep 17 09:21:48 2018
+
 '''
 cred1=credentials.Certificate("munshik3-46360-firebase-adminsdk-d1ymf-4358fc0962.json")
 
