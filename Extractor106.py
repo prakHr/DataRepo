@@ -8,26 +8,26 @@ cred1=credentials.Certificate("munshik3-46360-firebase-adminsdk-d1ymf-4358fc0962
 '''
 PhoneNos,Name,Bills,Barcodes,SpeechItems,Date last used and kirana timestamp
 
-+917742466334 chouhan kirana 24 4 1778 
-+919166025226 Vinodji 1 1024 589 
-+918290023496 RadheShyam 5 4298 589 
-+919610789692 Kamlesh Kirana 14 118 600 
-+919777688002 Kanha Store 15 1149 742 
-+916378824851 SB Enterprises 15 659 543 
-+916378867751 sagar provision store 106 1294 2099 
-+919782216504 Shubham Kira 36 1201 1830 
-+91901175999 Chawla Store 9 434 1319 
-+918249403101 Sample Bills 1 1 442  
-+916378731893 Mahesh Kirana 7 279 595 
-+919167287597 Variety Grain 43 4 1917 
-+919664087863 vardhman 47 365 1803 
-+919777688001 Kumawat Store 16 610 718 
-+919982204792 Nishant Store 2 1 0 
-+919809258989 Apni Kirana 24 4429 589 
-+919777688003 Saral Store 13 576 597 
++917742466334 chouhan kirana 24 4 1778 Wed Oct 10 17:19:53
++919166025226 Vinodji 1 1024 589 Thu Oct 11 06:23:25
++918290023496 RadheShyam 5 4298 589 Thu Sep 13 06:29:17
++919610789692 Kamlesh Kirana 14 118 600 Fri Oct  5 08:17:04
++919777688002 Kanha Store 15 1149 742 Tue Oct  9 09:19:26
++916378824851 SB Enterprises 15 659 543 Thu Sep 13 07:42:51
++916378867751 sagar provision store 106 1294 2099 Thu Sep 13 07:42:51
++919782216504 Shubham Kira 36 1201 1830 Mon Oct  8 13:40:54
++91901175999 Chawla Store 9 434 1319 Fri Oct  5 08:18:41
++918249403101 Sample Bills 1 1 442  Thu Sep 13 06:29:17
++916378731893 Mahesh Kirana 7 279 595 Sat Sep 29 09:32:11
++919167287597 Variety Grain 43 4 1917 Thu Oct 11 06:23:25
++919664087863 vardhman 47 365 1803 Tue Oct  9 09:19:26
++919777688001 Kumawat Store 16 610 718 Tue Oct  9 09:19:26
++919982204792 Nishant Store 2 1 0 Wed Oct 10 16:12:59
++919809258989 Apni Kirana 24 4429 589 Sat Oct  6 08:19:51
++919777688003 Saral Store 13 576 597 Tue Oct  9 09:19:26
 +919011752453 Jain Departmental(has 2 phones) 23 1628 581(need to work here)
 (+919829931177)
-+919777688639 awesome 169 8 124 
++919777688639 awesome 169 8 124 Thu Oct 11 06:34:30
 '''
 def extractFromFirebase(cred):
     app=firebase_admin.initialize_app(cred)
@@ -37,16 +37,15 @@ def extractFromFirebase(cred):
 
 db=extractFromFirebase(cred1)
 #function takes reference of users collection as input and returns tuple(kiranaOwnerName,phoneNo)
-def ExtractorOfKiranaNamesAndCorrespondingPhones(reference):
+def ExtractorOfKiranaNames(reference):
     docs=reference.get()
     Set=set()
-
     for doc in docs:
         mydict=doc.to_dict()
         if 'kiranaName' in mydict:
             if mydict['kiranaName']=='' or mydict['kiranaName']==' ':
                 continue
-            Set.add((mydict['kiranaName'],doc.id))  
+            Set.add(mydict['kiranaName'])
     return Set
 
 #function saves id and data-fields into array from reference node of the tree in firestore and return that array
@@ -57,65 +56,40 @@ def Extractor(reference):
         array.append([doc.id,doc.to_dict()])
     return array
 
-#function gives total no of documents in main collections for ex. users
-def lengthOfCollection(collection):
-    length=0
-    for docs in collection:
-        length+=1
-    return length
-
 ref=db.collection(u'users')
 
 UsersArray=Extractor(ref)
-kiranaNamesSet=ExtractorOfKiranaNamesAndCorrespondingPhones(ref)
-print(kiranaNamesSet)#20 names and corresponding phones
-#{ 'vardhman', 'Saral Store', 'Mahesh Kirana', 'Variety Grain', 'Kumawat Store', 'Nishant Store', 'Jain Departmental', 'Sample Bills', 'Kanha Store', 'Kamlesh Kirana', 'RadheShyam', 'Shubham Kira', 'sagar provision store', 'Apni Kirana', 'Chawla Store', 'chouhan kirana', 'SB Enterprises', 'Vinodji', 'awesome'}
-'''
-arrayOfNamesAndBillsAndSpeechItemsAndBarcodeItemsAndlastUsedTimeAndtimeStamp=[]
-#Total No of bills of kirana in kiranaNamesSet
-for k in kiranaNamesSet:
+kiranaNamesSet=ExtractorOfKiranaNames(ref)
+#print(kiranaNamesSet)
 
-    total,totalBarcodes,totalSpeechInventory=0,0,0
-    lastUsedArray,timeStampArray,l,s=[],[],0,0
-    
+arrayOflastUsedTimeAndtimeStamp=[]
+
+for k in kiranaNamesSet:
+    lastUsed,timeStamp,l,s=0,0,0,0
     for doc in UsersArray:
-        
-        barcode_inventory_collection=db.collection(u'users').document(doc[0]).collection(u'barcode_inventory').get()
-        bills_collection=db.collection(u'users').document(doc[0]).collection(u'bills').get()
-        speech_inventory_collection=db.collection(u'users').document(doc[0]).collection(u'speech_inventory').get()
-        
-        barcodes=lengthOfCollection(barcode_inventory_collection)
-        bills=lengthOfCollection(bills_collection)
-        speechItems=lengthOfCollection(speech_inventory_collection)
-        
-        if 'kiranaName' in doc[1]:#mistake is either one of them is missing so not showing
-            #sab timestamp or lastUsed ko ek array mein append karo or latest time show karo
-            
+        if 'kiranaName' in doc[1]:
             if 'lastUsed' in doc[1]:
                 lastUsedTime=doc[1]['lastUsed']
                 if len(str(lastUsedTime))==13:
                     lastUsedTime/=1000
                     l=time.ctime(lastUsedTime)
-                    lastUsedArray.append(l[-13:-5])
-
+                    
             if 'timestamp' in doc[1]:
                 timeStamp=doc[1]['timestamp']
                 if len(str(timeStamp))==13:
                     timeStamp/=1000
                     s=time.ctime(timeStamp)#Sat Sep 29 15:02:11 2018(Day Month Date Time Year)
-                    timeStampArray.append(s[-len(s):-5])#to get rid of year Sat Sep 29 15:02:11
+                    #timeStampArray.append(s[-len(s):-5])#to get rid of year Sat Sep 29 15:02:11
 
             current_owner=doc[1]['kiranaName']
         if k==current_owner:
-            totalBarcodes+=barcodes
-            total+=bills
-            totalSpeechInventory+=speechItems
-            
-    print(k,total,totalBarcodes,totalSpeechInventory,sorted(lastUsedArray),sorted(timeStampArray))
-    arrayOfNamesAndBillsAndSpeechItemsAndBarcodeItemsAndlastUsedTimeAndtimeStamp.append([k,total,totalBarcodes,totalSpeechInventory,sorted(lastUsedArray)[-1],sorted(timeStampArray)[-1]])
+            lastUsed=str(l)[-13:-5]
+            timeStamp=str(s)[-13:-5]      
+    print('kiranaOwner , lastUsed variable here=>',k,lastUsed)
+    #arrayOflastUsedTimeAndtimeStamp.append([k,lastUsed,timeStamp])
     
-print(arrayOfNamesAndBillsAndSpeechItemsAndBarcodeItemsAndlastUsedTimeAndtimeStamp)
-'''
+print(arrayOflastUsedTimeAndtimeStamp)
+
 
 
 
