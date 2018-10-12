@@ -82,7 +82,7 @@ for doc in UsersArray:
         current_owner=doc[1]['kiranaName']
 
         print(current_owner,'=>',s,l)
-        #arrayOflastUsedTimeAndtimeStamp.append([k,s,l])
+        arrayOflastUsedTimeAndtimeStamp.append([current_owner,s,l])
 
 #print(arrayOflastUsedTimeAndtimeStamp)
 
@@ -108,8 +108,8 @@ for k in kiranaNamesSet:
             total+=bills
             totalSpeechInventory+=speechItems
             
-    #print(k,total,totalBarcodes,totalSpeechInventory)
-    arrayOfNamesAndBillsAndSpeechItemsAndBarcodeItems.append([k,total,totalBarcodes,totalSpeechInventory])
+    print(k,total,totalBarcodes,totalSpeechInventory)
+    #arrayOfNamesAndBillsAndSpeechItemsAndBarcodeItems.append([k,total,totalBarcodes,totalSpeechInventory])
     
 #ans1=print(arrayOfNamesAndBillsAndSpeechItemsAndBarcodeItems)
 
