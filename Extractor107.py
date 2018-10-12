@@ -4,7 +4,6 @@ from firebase_admin import firestore
 import time
 
 cred1=credentials.Certificate("munshik3-46360-firebase-adminsdk-d1ymf-4358fc0962.json")
-
 def extractFromFirebase(cred):
     app=firebase_admin.initialize_app(cred)
     db=firestore.client()
@@ -59,9 +58,14 @@ def lengthOfCollection(collection):
     return length
 
 arrayOflastUsedTimeAndtimeStamp=[]
+print('---------KiranaName ,phoneNo---------------')
+print('--------------------------------------')
 
 kiranaNamesSet2=ExtractorOfKiranaNamesAndCorrespondingPhones(ref)
-#print(kiranaNamesSet2)
+print(kiranaNamesSet2)
+
+print('---------KiranaName ,timestamp ,lastUsed--------')
+print('--------------------------------------')
 
 ts,tss,current_owner,l,s=0,0,0,0,0
 for doc in UsersArray:
@@ -85,6 +89,8 @@ for doc in UsersArray:
         arrayOflastUsedTimeAndtimeStamp.append([current_owner,s,l])
 
 #print(arrayOflastUsedTimeAndtimeStamp)
+print('---------KiranaName ,barcodes ,bills ,speechItems--------')
+print('-------------------------------------------')
 
 arrayOfNamesAndBillsAndSpeechItemsAndBarcodeItems=[]
 #Total No of bills of kirana in kiranaNamesSet
