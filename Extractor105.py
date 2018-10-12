@@ -2,6 +2,7 @@ import firebase_admin
 from firebase_admin import *
 from firebase_admin import firestore
 #import time
+from waitress import serve
 
 cred=credentials.Certificate("python-78039-firebase-adminsdk-mthis-66f13748f8.json")
 
@@ -40,14 +41,18 @@ class KiranasClass:
         
 import falcon
 app=application=api=falcon.API()
-app.add_route('/Kiranas',KiranasClass())
+app.add_route('/Kiranas',KiranasClass())#192.168.31.31
+#Ctrl-C(or Ctrl-Break on Windows)
+hostingAt='127.0.0.1:8080'
+portOf=8080
+serve(app, listen=hostingAt)#IPv4 addresses,but not IPv6#instead of * need to put my ipV4 address
 #myarray needs to be added here
-myarray=mehboobsList
+#myarray=mehboobsList
 
-class MehboobsClass:
-    def on_get(self,req,resp):
-        resp.body=dumps(myarray)
-        resp.status=falcon.HTTP_200
+#class MehboobsClass:
+  #  def on_get(self,req,resp):
+    #    resp.body=dumps(myarray)
+     #   resp.status=falcon.HTTP_200
         
 #go to http://127.0.0.1:5000/Mehboobs using gunicorn -b 0.0.0.0:5000 Extractor105:app --reload
-app.add_route('/Mehboobs',MehboobsClass())
+#app.add_route('/Mehboobs',MehboobsClass())
