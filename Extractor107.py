@@ -58,7 +58,7 @@ def lengthOfCollection(collection):
     return length
 
 arrayOflastUsedTimeAndtimeStamp=[]
-print('---------KiranaName ,phoneNo---------------')
+print('---------KiranaName ,phoneNo(tuples)-----------')
 print('--------------------------------------')
 
 kiranaNamesSet2=ExtractorOfKiranaNamesAndCorrespondingPhones(ref)
