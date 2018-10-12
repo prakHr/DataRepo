@@ -85,7 +85,7 @@ for doc in UsersArray:
         
         current_owner=doc[1]['kiranaName']
 
-        print(current_owner,'=>',s,l)
+        print(current_owner,'=>',s, 'And' ,l)
         arrayOflastUsedTimeAndtimeStamp.append([current_owner,s,l])
 
 #print(arrayOflastUsedTimeAndtimeStamp)
