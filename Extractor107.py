@@ -118,8 +118,8 @@ for k in kiranaNamesSet:
     print(k,total,totalBarcodes,totalSpeechInventory)
     #arrayOfNamesAndBillsAndSpeechItemsAndBarcodeItems.append([k,total,totalBarcodes,totalSpeechInventory])
     
-#ans1=print(arrayOfNamesAndBillsAndSpeechItemsAndBarcodeItems)
-
+#ans3=(arrayOfNamesAndBillsAndSpeechItemsAndBarcodeItems)
+#print(ans3)
 
 
 
