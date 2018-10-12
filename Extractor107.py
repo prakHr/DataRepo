@@ -62,7 +62,7 @@ print('---------KiranaName ,phoneNo---------------')
 print('--------------------------------------')
 
 kiranaNamesSet2=ExtractorOfKiranaNamesAndCorrespondingPhones(ref)
-print(kiranaNamesSet2)
+print(kiranaNamesSet2)#It is a set so prints randomly everytime 
 
 print('---------KiranaName ,timestamp ,lastUsed--------')
 print('--------------------------------------')
