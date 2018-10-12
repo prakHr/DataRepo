@@ -70,7 +70,8 @@ print('--------------------------------------')
 ts,tss,current_owner,l,s=0,0,0,0,0
 for doc in UsersArray:
     if 'kiranaName' in doc[1]:
-
+        if doc[1]['kiranaName']=='' or doc[1]['kiranaName']==' ':
+            continue
         if 'timestamp' in doc[1]:
             ts=doc[1]['timestamp']
             if len(str(ts))==13:
