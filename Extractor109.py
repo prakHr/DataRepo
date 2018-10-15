@@ -31,6 +31,7 @@ users_ref=db1.collection(u'users')
 '''outputs is of the forms:-
 ['कि.ग्रा. / ग्राम', 'लीटर / मि.ली.', ' इकाई', 'अन्य'] comes from {'units': ['कि.ग्रा. / ग्राम', 'लीटर / मि.ली.', ' इकाई', 'अन्य']} 
 '''
+
 cred2=credentials.Certificate("project2-a9304-firebase-adminsdk-g278y-70502f4ece.json")
 db2=extractDatabase(cred2)
 Kiranas_ref=db2.collection(u'Kiranas')
