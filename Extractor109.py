@@ -21,7 +21,7 @@ def Extractor(reference):
     return array
 
 DocumentsArray=Extractor(db2.collection(u'Kiranas'))
-
+'''
 def printFromBarcodesCollection(b_collection):
     #name_array,number_array,price_array,len_price_array=[],[],[],[]
     array=[]
@@ -42,8 +42,17 @@ def printFromBarcodesCollection(b_collection):
     return array
 arrayOfArrays=[]
 for doc in DocumentsArray:
+    #arrayOfArrays=[] doubt here
     ids,my_dict,array=doc[0],doc[1],[]
     BarcodesCollection=db2.collection(u'Kiranas').document(ids).collection(u'Barcodes').get()
     array=printFromBarcodesCollection(BarcodesCollection)
     arrayOfArrays.append(array)
 print(arrayOfArrays)
+'''
+for doc in DocumentsArray:
+    ids=doc[0]
+    SpeechItemsCollectionRef=db2.collection(u'Kiranas').document(ids).collection(u'SpeechItems')
+    speechArray=Extractor(SpeechItemsCollectionRef)
+    for ids1,my_dict in speechArray:
+        print(ids1)
+    
