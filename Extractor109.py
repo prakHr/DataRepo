@@ -3,41 +3,47 @@ import firebase_admin
 from firebase_admin import *
 from firebase_admin import firestore
 
+cred2=credentials.Certificate("project2-a9304-firebase-adminsdk-g278y-70502f4ece.json")
+
 def extractDatabase(cred):
     app=firebase_admin.initialize_app(cred)
     db=firestore.client()
     delete_app(app)
     return db
 
-#function takes reference of mainCollections as argument and print the value corresponding to dictionary[keys] of all documents
-def printDocumentsOfMainCollection(reference):
-    main_collection=reference.get()
-    for doc in main_collection:
-        d=doc.to_dict()
-        print(d,end='\n')
-
-#function prints only the specific value corresponding to a specific key existing in all documents        
-def printValueOfSpecificDictKeyOfMainCollection(reference,key):
-    main_collection=reference.get()
-    for doc in main_collection:
-        d=doc.to_dict()
-        if key in d:
-            print(d[key])
-
-cred1=credentials.Certificate('munshik3-46360-firebase-adminsdk-d1ymf-4358fc0962.json')
-db1=extractDatabase(cred1)
-users_ref=db1.collection(u'users')
-#printValueOfSpecificDictKeyOfMainCollection(users_ref,'units')
-'''outputs is of the forms:-
-['कि.ग्रा. / ग्राम', 'लीटर / मि.ली.', ' इकाई', 'अन्य'] comes from {'units': ['कि.ग्रा. / ग्राम', 'लीटर / मि.ली.', ' इकाई', 'अन्य']} 
-'''
-
-cred2=credentials.Certificate("project2-a9304-firebase-adminsdk-g278y-70502f4ece.json")
 db2=extractDatabase(cred2)
-Kiranas_ref=db2.collection(u'Kiranas')
-#printDocumentsOfMainCollection(Kiranas_ref)
-'''outputs is of the forms:-
-{'address': 'banyan tree', 'transferTo': True}
-{'address': 'fatehsagar'}
-{'address': 'pichhola'}
-'''
+
+def Extractor(reference):
+    docs=reference.get()
+    array=[]
+    for doc in docs:
+        array.append([doc.id,doc.to_dict()])
+    return array
+
+DocumentsArray=Extractor(db2.collection(u'Kiranas'))
+
+def printFromBarcodesCollection(b_collection):
+    #name_array,number_array,price_array,len_price_array=[],[],[],[]
+    array=[]
+    for random_doc in b_collection:
+        ID,my_dict=random_doc.id,random_doc.to_dict()
+        if 'name' not in my_dict:
+            print('barcodeName not found in id of kiranas collection: '+str(ID))
+            if 'barcode' not in my_dict:
+                print('barcodeNumber not found in id of kiranas collection: '+str(ID))
+                if 'price' not in my_dict:
+                    print('barcodePrice not found in id of kiranas collection: '+str(ID))
+            continue
+        name,number,price=my_dict['name'],my_dict['barcode'],my_dict['price']
+        array.append([name,number,price,len(price)])
+        #name_array.append(name);number_array.append(number);price_array.append(price);len_price_array.append(len(price))
+        #array.append(name,number,price,len(price))#array[0]=name,array[1]=number,array[2]=price,array[3]=len(price)
+    #print(array)
+    return array
+arrayOfArrays=[]
+for doc in DocumentsArray:
+    ids,my_dict,array=doc[0],doc[1],[]
+    BarcodesCollection=db2.collection(u'Kiranas').document(ids).collection(u'Barcodes').get()
+    array=printFromBarcodesCollection(BarcodesCollection)
+    arrayOfArrays.append(array)
+print(arrayOfArrays)
