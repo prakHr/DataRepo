@@ -9,12 +9,14 @@ def extractDatabase(cred):
     delete_app(app)
     return db
 
+#function takes reference of mainCollections as argument and print the value corresponding to dictionary[keys] of all documents
 def printDocumentsOfMainCollection(reference):
     main_collection=reference.get()
     for doc in main_collection:
         d=doc.to_dict()
         print(d,end='\n')
-        
+
+#function prints only the specific value corresponding to a specific key existing in all documents        
 def printValueOfSpecificDictKeyOfMainCollection(reference,key):
     main_collection=reference.get()
     for doc in main_collection:
