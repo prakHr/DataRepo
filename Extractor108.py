@@ -1,8 +1,10 @@
 import firebase_admin
 from firebase_admin import *
 from firebase_admin import firestore
-
 import time,math,datetime,random,six
+from datetime import timedelta
+
+start_time=time.time()
 
 _AUTO_ID_CHARS = ('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789')
 
@@ -120,6 +122,10 @@ for doc in DocumentsArray:
     #elif: there is gonna be a big fatty error due to either incomplete Transfer
         
     #missing variables
+end_time=time.time()
+elapsed_time_in_secs=end_time-start_time
+message="Execution took: %s secs"% timedelta(seconds=round(elapsed_time_in_secs))
+print(message)
 '''
 #mainCollectionsInDatabase1=[u'barcode_inventory',u'barcode_repeats',u'bills',u'customers',u'speech_inventory',u'tags',u'unlisted_barcode_inventory',u'users']
 #billsCollectionInDatabase1=u'sold'
