@@ -50,23 +50,81 @@ def IdAndPhoneNoOfBarcodesModifiedAndTimestampFromBD(reference):
         array.append(phones)
     return array
 
+mainCollectionCreated=u'FailedTransfers'
 
 #function takes BarcodesCollection from projectMehboob as input and stores output in the form arrayOfArrays[[barcodeName1,barcodeNumber1,barcodePriceArray1,len(barcodePriceArray1)],[barcodeName2,barcodeNumber2,barcodePriceArray2,len(barcodePriceArray2)]...]
-def extractionFromBarcodesCollection(b_collection):
-    array=[]
+def extractionFromBarcodesCollection(b_collection,path):
+    array,reasons=[],[]
     for random_doc in b_collection:
+        flag1,flag2,flag3,flag4=False,False,False,False
         ID,my_dict=random_doc.id,random_doc.to_dict()
         if 'name' not in my_dict:
-            print('barcodeName not found in id of kiranas collection: '+str(ID))
-            if 'barcode' not in my_dict:
-                print('barcodeNumber not found in id of kiranas collection: '+str(ID))
-                if 'price' not in my_dict:
-                    print('barcodePrice not found in id of kiranas collection: '+str(ID))
-            continue
-        name,number,price=my_dict['name'],my_dict['barcode'],my_dict['price']
-        array.append([name,number,price,len(price)])#array[0]=name,array[1]=number,array[2]=price,array[3]=len(price)
+            flag1=True
+        if 'barcode' not in my_dict:
+            flag2=True
+        if 'price' not in my_dict:
+            flag3=True
+        if 'modified' not in my_dict:
+            flag4=True
+            
+        pathDash=path+'/ID/'
+        
+        if flag1==True:
+            nowTime=time.time();nowTime=math.ceil(nowTime*1000)
+            ts=str(nowTime)
+            reasons.append(['Name',pathDash,ts])
+        if flag2==True:
+            nowTime=time.time();nowTime=math.ceil(nowTime*1000)
+            ts=str(nowTime)
+            reasons.append(['Number',pathDash,ts])
+        if flag3==True:
+            nowTime=time.time();nowTime=math.ceil(nowTime*1000)
+            ts=str(nowTime)
+            reasons.append(['Price',pathDash,ts])
+        if flag4==True:
+            nowTime=time.time();nowTime=math.ceil(nowTime*1000)
+            ts=str(nowTime)
+            reasons.append(['Modified',pathDash,ts])
+            
+            #print('barcodeName not found in id of kiranas collection: '+str(ID))
+        #if flag4==True:
+          #  continue
+        if flag1==True and flag2==True and flag3==True and flag4==True:#gonna be 2<<3 cases i.e. 16 cases
+            name,number,price,modified='','',[0],''
+        if flag1==True and flag2==True and flag3==False and flag4==True:
+            name,number,price,modified='','',my_dict['price'],''
+        if flag1==True and flag2==False and flag3==True and flag4==True:
+            name,number,price,modified='',my_dict['barcode'],[0],''
+        if flag1==False and flag2==True and flag3==True and flag4==True:
+            name,number,price,modified=my_dict['name'],'',[0],''
+        if flag1==True and flag2==False and flag3==False and flag4==True:
+            name,number,price,modified='',my_dict['barcode'],my_dict['price'],''
+        if flag1==False and flag2==False and flag3==True and flag4==True:
+            name,number,price,modified=my_dict['name'],my_dict['barcode'],[0],''
+        if flag1==False and flag2==False and flag3==False and flag4==True:
+            name,number,price,modified=my_dict['name'],my_dict['barcode'],my_dict['price'],''
+        if flag1==False and flag2==True and flag3==False and flag4==True:
+            name,number,price,modified=my_dict['name'],'',my_dict['price'],''
+        if flag1==True and flag2==True and flag3==True and flag4==False:#gonna be 2<<3 cases i.e. 16 cases
+            name,number,price,modified='','',[0],my_dict['modified']
+        if flag1==True and flag2==True and flag3==False and flag4==False:
+            name,number,price,modified='','',my_dict['price'],my_dict['modified']
+        if flag1==True and flag2==False and flag3==True and flag4==False:
+            name,number,price,modified='',my_dict['barcode'],[0],my_dict['modified']
+        if flag1==False and flag2==True and flag3==True and flag4==False:
+            name,number,price,modified=my_dict['name'],'',[0],my_dict['modified']
+        if flag1==True and flag2==False and flag3==False and flag4==False:
+            name,number,price,modified='',my_dict['barcode'],my_dict['price'],my_dict['modified']
+        if flag1==False and flag2==False and flag3==True and flag4==False:
+            name,number,price,modified=my_dict['name'],my_dict['barcode'],[0],my_dict['modified']
+        if flag1==False and flag2==False and flag3==False and flag4==False:
+            name,number,price,modified=my_dict['name'],my_dict['barcode'],my_dict['price'],my_dict['modified']
+        if flag1==False and flag2==True and flag3==False and flag4==False:
+            name,number,price,modified=my_dict['name'],'',my_dict['price'],my_dict['modified']
+            
+        array.append([modified,name,number,price,len(price)])#array[0]=modified,array[1]=name,array[2]=number,array[3]=price,array[4]=len(price)
         #print(array)
-    return array
+    return array,reasons
     
 DocumentsArray=Extractor(db2.collection(u'Kiranas'))
 
@@ -84,29 +142,49 @@ for doc in DocumentsArray:
         
         BarcodesCollection=BarcodesCollectionRef.get()    
         SpeechItemsCollection=SpeechItemsCollectionRef.get()
+
+        BarcodePath='/Kiranas/ids/Barcodes'
         
-        everythingArray=extractionFromBarcodesCollection(BarcodesCollection)#[[['bshs', '25461845', [88], 1], ['qwerty', '123', [133, 24, 212], 3]], [], []]
+        everythingArray,reasonsArrayForMissingVariable=extractionFromBarcodesCollection(BarcodesCollection,BarcodePath),[]#[[['bshs', '25461845', [88], 1], ['qwerty', '123', [133, 24, 212], 3]], [], []]
         #print(everythingArray)#[['bshs', '25461845', [88], 1], ['qwerty', '123', [133, 24, 212], 3]]
+
+        reason2=str('missing barcode')
+        for reasons in reasonsArrayForMissingVariable:
+            pathVariable=reasons[1]
+            timeCode=reasons[2]
+            reason21=reason2+reasons[0]
+
+            db2.collection(mainCollectionCreated).document(_auto_id()).set({'path':pathVariable,'reason':reason21,'timestamp':timeCode,'transferRequestFor':str(ids)})
         
-        #speechArray=Extractor(SpeechItemsCollectionRef)
+        #barcodeArray,speechArray=Extractor(BarcodesCollectionRef),Extractor(SpeechItemsCollectionRef)
         
         for i in range(len(everythingArray)):
-            priceArrayLengthIndb2=everythingArray[i][3]
-            if priceArrayLengthIndb2==1:
-                db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][0]).set({'barcodeName':everythingArray[i][0],'barcodeNumber':everythingArray[i][1],'barcodePrice':everythingArray[i][2][0]})
-            elif priceArrayLengthIndb2==2:
-                db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][1]).set({'barcodeName':everythingArray[i][0],'barcodeNumber':everythingArray[i][1],'barcodePrice':everythingArray[i][2][0],'barcodePrice2':everythingArray[i][2][1]})
-            elif priceArrayLengthIndb2==3:
-                db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][1]).set({'barcodeName':everythingArray[i][0],'barcodeNumber':everythingArray[i][1],'barcodePrice':everythingArray[i][2][0],'barcodePrice2':everythingArray[i][2][1],'barcodePricePkt':everythingArray[i][2][2]})
-        
+            modifiedValue=everythingArray[i][0]
+            if modifiedValue==False:
+                priceArrayLengthIndb2=everythingArray[i][4]
+                if priceArrayLengthIndb2==1:
+                    db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][1]).set({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0]})
+                elif priceArrayLengthIndb2==2:
+                    db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][1]).set({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0],'barcodePrice2':everythingArray[i][3][1]})
+                elif priceArrayLengthIndb2==3:
+                    db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][1]).set({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0],'barcodePrice2':everythingArray[i][3][1],'barcodePricePkt':everythingArray[i][3][2]})
+            if modifiedValue==True:
+                priceArrayLengthIndb2=everythingArray[i][4]
+                if priceArrayLengthIndb2==1:
+                    db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][1]).update({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0]})
+                elif priceArrayLengthIndb2==2:
+                    db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][1]).update({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0],'barcodePrice2':everythingArray[i][3][1]})
+                elif priceArrayLengthIndb2==3:
+                    db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][1]).update({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0],'barcodePrice2':everythingArray[i][3][1],'barcodePricePkt':everythingArray[i][3][2]})
+            
         '''
         barcodeArray,speechArray=iterator(BarcodesCollection),iterator(SpeechItemsCollection)
         editCollection(db1,barcodeArray,idToTransferAtdb1,u'barcode_inventory')
         editCollection(db1,speechArray,idToTransferAtdb1,u'speech_inventory')
         '''
+        #barcodeArray,speechArray=iterator(BarcodesCollection),iterator(SpeechItemsCollection)
         #for a,b in barcodeArray:
-          #  db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(a).set(b)
-        #speechArray=iterator(SpeechItemsCollection)
+          #  db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(a).set(b)  
         #for c,d in speechArray:
           #  db1.collection(u'users').document(idToTransferAtdb1).collection(u'speech_inventory').document(c).set(d)
             
@@ -115,27 +193,16 @@ for doc in DocumentsArray:
         #now=time.ctime() OR t=datetime.datetime.strptime(time.ctime(),"%a %b %d %H:%M:%S %Y");ts=str(t.timestamp()) OR t=math.floor(time.time())=>10 length timestamp after rounding off(to convert into 13 length timestamp time.time()=1539596964.1039205)
         nowTime=time.time();nowTime=math.ceil(nowTime*1000)
         ts=str(nowTime)
-        reason=str('transferTo field not found')
+        reason1=str('transferTo field not found')
         pathVariable='/Kiranas/'+ids
-        db2.collection(u'FailedTransfers').document(_auto_id()).set({'path':pathVariable,'reason':reason,'timestamp':ts,'transferRequestFor':str(ids)})#autogenerateID(need to print path to find its type in python)
-        #need to convert timestamp to 13 length string,
-    #elif: there is gonna be a big fatty error due to either incomplete Transfer
-        
+        db2.collection(mainCollectionCreated).document(_auto_id()).set({'path':pathVariable,'reason':reason1,'timestamp':ts,'transferRequestFor':str(ids)})#autogenerateID(need to print path to find its type in python)
+
+        #need to convert timestamp to 13 length string,(Done)
     #missing variables
 end_time=time.time()
 elapsed_time_in_secs=end_time-start_time
 message="Execution took: %s secs"% timedelta(seconds=round(elapsed_time_in_secs))
 print(message)
-'''
-#mainCollectionsInDatabase1=[u'barcode_inventory',u'barcode_repeats',u'bills',u'customers',u'speech_inventory',u'tags',u'unlisted_barcode_inventory',u'users']
-#billsCollectionInDatabase1=u'sold'
-#usersCollectionsInDatabase1=[u'barcode_inventory',u'bills',u'customers',u'speech_inventory']
-#customersCollectionInDatabase1=[u'payment',u'paid',u'udhaar']
-
-#mainCollectionsInDatabase2=[u'BD',u'GlobalData',u'Kiranas',u'Mehboobs']
-#globalDataCollectionInDatabase2=[u'Barcodes',u'SpeechItems']
-#kiranasDataCollectionInDatabase2=[u'Barcodes',u'SpeechItems']
-'''
 
 
 '''
