@@ -130,8 +130,9 @@ DocumentsArray=Extractor(db2.collection(u'Kiranas'))
 
 #function takes database,a array,a name of main collection,id to transfer at and inventory as input and set documents according to array in database
 def editCollection(database,array,main_collection,idToTransferAt,inventory):
-    for a,b in array:
-        database.collection(main_collection).document(idToTransferAt).collection(inventory).document(a).set(b)
+    for [a,b] in array:
+        ids,my_dict=a,b
+        database.collection(main_collection).document(idToTransferAt).collection(inventory).document(ids).set(my_dict)
     
 for doc in DocumentsArray:
     ids,my_dict=doc[0],doc[1]
@@ -140,8 +141,8 @@ for doc in DocumentsArray:
         BarcodesCollectionRef=db2.collection(u'Kiranas').document(ids).collection(u'Barcodes')
         SpeechItemsCollectionRef=db2.collection(u'Kiranas').document(ids).collection(u'SpeechItems')
         
-        BarcodesCollection=BarcodesCollectionRef.get()    
-        SpeechItemsCollection=SpeechItemsCollectionRef.get()
+        BarcodesCollection=db2.collection(u'Kiranas').document(ids).collection(u'Barcodes').get()    
+        SpeechItemsCollection=db2.collection(u'Kiranas').document(ids).collection(u'SpeechItems').get()
 
         BarcodePath='/Kiranas/'+ids+'/Barcodes'
         
@@ -179,15 +180,15 @@ for doc in DocumentsArray:
                     db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][2]).update({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0],'barcodePrice2':everythingArray[i][3][1],'barcodePricePkt':everythingArray[i][3][2]})
             
 
+        #editCollection(database,array,main_collection,idToTransferAt,inventory):
+        #editCollection(db1,u'users',speechArray,idToTransferAtdb1,u'speech_inventory')
         
+        #barcodeArray=iterator(BarcodesCollection)
         speechArray=iterator(SpeechItemsCollection)
-        editCollection(db1,speechArray,idToTransferAtdb1,u'speech_inventory')
-        
-        #barcodeArray,speechArray=iterator(BarcodesCollection),iterator(SpeechItemsCollection)
         #for a,b in barcodeArray:
           #  db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(a).set(b)  
-        #for c,d in speechArray:
-          #  db1.collection(u'users').document(idToTransferAtdb1).collection(u'speech_inventory').document(c).set(d)
+        for c,d in speechArray:
+            db1.collection(u'users').document(idToTransferAtdb1).collection(u'speech_inventory').document(c).set(d)
             
     elif 'transferTo' not in my_dict:
         #path='\\Kiranas\\jain' OR '\\Kiranas'+'jain'
