@@ -67,7 +67,7 @@ def extractionFromBarcodesCollection(b_collection,path):
         if 'modified' not in my_dict:
             flag4=True
             
-        pathDash=path+'/ID/'
+        pathDash=path+'/'+ID+'/'
         
         if flag1==True:
             nowTime=time.time();nowTime=math.ceil(nowTime*1000)
@@ -143,45 +143,46 @@ for doc in DocumentsArray:
         BarcodesCollection=BarcodesCollectionRef.get()    
         SpeechItemsCollection=SpeechItemsCollectionRef.get()
 
-        BarcodePath='/Kiranas/ids/Barcodes'
+        BarcodePath='/Kiranas/'+ids+'/Barcodes'
         
-        everythingArray,reasonsArrayForMissingVariable=extractionFromBarcodesCollection(BarcodesCollection,BarcodePath),[]#[[['bshs', '25461845', [88], 1], ['qwerty', '123', [133, 24, 212], 3]], [], []]
+        everythingArray,reasonsArrayForMissingVariable=extractionFromBarcodesCollection(BarcodesCollection,BarcodePath)#[[['bshs', '25461845', [88], 1], ['qwerty', '123', [133, 24, 212], 3]], [], []]
         #print(everythingArray)#[['bshs', '25461845', [88], 1], ['qwerty', '123', [133, 24, 212], 3]]
 
         reason2=str('missing barcode')
         for reasons in reasonsArrayForMissingVariable:
             pathVariable=reasons[1]
-            timeCode=reasons[2]
+            timestampGeneratedFromCode=reasons[2]
             reason21=reason2+reasons[0]
 
-            db2.collection(mainCollectionCreated).document(_auto_id()).set({'path':pathVariable,'reason':reason21,'timestamp':timeCode,'transferRequestFor':str(ids)})
+            db2.collection(mainCollectionCreated).document(_auto_id()).set({'path':pathVariable,'reason':reason21,'timestamp':timestampGeneratedFromCode,'transferRequestFor':str(ids)})
         
         #barcodeArray,speechArray=Extractor(BarcodesCollectionRef),Extractor(SpeechItemsCollectionRef)
+        #print(everythingArray)
         
         for i in range(len(everythingArray)):
             modifiedValue=everythingArray[i][0]
             if modifiedValue==False:
                 priceArrayLengthIndb2=everythingArray[i][4]
                 if priceArrayLengthIndb2==1:
-                    db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][1]).set({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0]})
+                    db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][2]).set({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0]})
                 elif priceArrayLengthIndb2==2:
-                    db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][1]).set({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0],'barcodePrice2':everythingArray[i][3][1]})
+                    db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][2]).set({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0],'barcodePrice2':everythingArray[i][3][1]})
                 elif priceArrayLengthIndb2==3:
-                    db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][1]).set({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0],'barcodePrice2':everythingArray[i][3][1],'barcodePricePkt':everythingArray[i][3][2]})
-            if modifiedValue==True:
+                    db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][2]).set({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0],'barcodePrice2':everythingArray[i][3][1],'barcodePricePkt':everythingArray[i][3][2]})
+            elif modifiedValue==True:
                 priceArrayLengthIndb2=everythingArray[i][4]
                 if priceArrayLengthIndb2==1:
-                    db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][1]).update({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0]})
+                    db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][2]).update({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0]})
                 elif priceArrayLengthIndb2==2:
-                    db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][1]).update({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0],'barcodePrice2':everythingArray[i][3][1]})
+                    db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][2]).update({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0],'barcodePrice2':everythingArray[i][3][1]})
                 elif priceArrayLengthIndb2==3:
-                    db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][1]).update({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0],'barcodePrice2':everythingArray[i][3][1],'barcodePricePkt':everythingArray[i][3][2]})
+                    db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][2]).update({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0],'barcodePrice2':everythingArray[i][3][1],'barcodePricePkt':everythingArray[i][3][2]})
             
-        '''
-        barcodeArray,speechArray=iterator(BarcodesCollection),iterator(SpeechItemsCollection)
-        editCollection(db1,barcodeArray,idToTransferAtdb1,u'barcode_inventory')
+
+        
+        speechArray=iterator(SpeechItemsCollection)
         editCollection(db1,speechArray,idToTransferAtdb1,u'speech_inventory')
-        '''
+        
         #barcodeArray,speechArray=iterator(BarcodesCollection),iterator(SpeechItemsCollection)
         #for a,b in barcodeArray:
           #  db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(a).set(b)  
