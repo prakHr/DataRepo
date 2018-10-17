@@ -20,7 +20,8 @@ barcode_inventory_ref=db1.collection(u'barcode_inventory')
 barcodes_set=set()
 for doc in barcode_inventory_docs:
     #print(doc.id)
-    barcodes_set.add(doc.id)
+    b=doc.id
+    barcodes_set.add(b.lower())
 
 barcodes_len_set=set()
 for b in barcodes_set:
@@ -66,7 +67,7 @@ def extractNameAndPriceFromBarcodes(database,reference):
     docs=reference.get()
     for doc in docs:
         ids,my_dict=doc.id,doc.to_dict()
-        number,name,price=my_dict['barcodeNumber'],my_dict['barcodeName'],my_dict['barcodePrice']
+        number,name,price=my_dict['barcodeNumber'],my_dict['barcodeName'].lower(),my_dict['barcodePrice']
         array.append([number,name,price])
         key=number
         price_dict[key]=price
@@ -163,7 +164,8 @@ for digit in x_minus_one_digit:
         print(a,end='\n')
     for a in array2:
         print(a,end='\n')
-    
+    print('Length of array1 is ',len(array1),' with ',x_digit,' ',x_minus_one_digit,' digit')
+    print('Length of array2 is ',len(array2),' with ',x_digit,' ',x_minus_one_digit,' digit')
 
 
 
