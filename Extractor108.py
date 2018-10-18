@@ -97,8 +97,7 @@ for doc in DocumentsArray:
             idToTransferAtdb1='+91'+my_dict['transferTo']
         
         BarcodesCollection=db2.collection(u'Kiranas').document(ids).collection(u'Barcodes').get()    
-        SpeechItemsCollection=db2.collection(u'Kiranas').document(ids).collection(u'SpeechItems').get()
-
+        SpeechItemsCollectionRef=db2.collection(u'Kiranas').document(ids).collection(u'SpeechItems')
         BarcodePath='/Kiranas/'+ids+'/Barcodes'
         
         everythingArray,reasonsArrayForMissingVariable=extractionFromBarcodesCollection(BarcodesCollection,BarcodePath)
@@ -124,7 +123,7 @@ for doc in DocumentsArray:
                 elif priceArrayLengthIndb2==2:db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][2]).update({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0],'barcodePrice2':everythingArray[i][3][1]})
                 elif priceArrayLengthIndb2==3:db1.collection(u'users').document(idToTransferAtdb1).collection(u'barcode_inventory').document(everythingArray[i][2]).update({'barcodeName':everythingArray[i][1],'barcodeNumber':everythingArray[i][2],'barcodePrice':everythingArray[i][3][0],'barcodePrice2':everythingArray[i][3][1],'barcodePricePkt':everythingArray[i][3][2]})
             
-        speechArray=Extractor(SpeechItemsCollection)
+        speechArray=Extractor(SpeechItemsCollectionRef)
         for docs in speechArray:
             c,d=docs[0],docs[1]
             db1.collection(u'users').document(idToTransferAtdb1).collection(u'speech_inventory').document(c).set(d)
