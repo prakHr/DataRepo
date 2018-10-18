@@ -6,6 +6,7 @@ from datetime import timedelta
 #in name remove spaces
 cred1=credentials.Certificate("munshik3-46360-firebase-adminsdk-d1ymf-4358fc0962.json")
 #'8906014763295', '88901262151863'
+
 def extractDatabase(cred):
     app=firebase_admin.initialize_app(cred)
     db=firestore.client()
@@ -113,15 +114,24 @@ def similarity(bLen_minus_one_digit,bLen_digit,barcodes,priceDict,nameDict):
         Array,flag=[],False
         for a in set1:
             count=1
+            
             if a not in Dict:continue
+
+            #if b==a[:-1] or b==a[1:]:flag=True
+            #if a==b[:-1] or a==b[1:]:flag=True
+            
             for b in set2:
                 
                 if b not in Dict:continue
-                
+                if b==a[:-1] or b==a[1:]:flag=True
+                if a==b[:-1] or a==b[1:]:flag=True
+                    
                 if b in set1 and Dict[a]==Dict[b]:
-                    if b==a[:-1] or b==a[1:]:
-                        flag=True
+                    
+                    if b==a[:-1] or b==a[1:]:flag=True
+                    if a==b[:-1] or a==b[1:]:flag=True
                     count+=1
+                    
             Array.append([Dict[a],a,b,flag])
         return Array
 
@@ -131,10 +141,16 @@ def similarity(bLen_minus_one_digit,bLen_digit,barcodes,priceDict,nameDict):
 
 x_minus_one_digit=[3,4,5,6,7,8,9,10,11,12,13,14,15]#since barcodes_len_set has corresponding digits+1 of {4,5,6,7,8,9,10,11,12,13,14,15,16}
 
-a,b=13,14
-array1,array2=similarity(a,b,barcodes_set,barcodesPriceDict,barcodesNameDict)
-print(array1,array2)
-'''
+#a,b=13,14#None True found
+#a,b=12,13#None True found
+#a,b=11,12#None True found
+#a,b=10,11#None True found
+#a,b=9,10
+
+#array1,array2=similarity(a,b,barcodes_set,barcodesPriceDict,barcodesNameDict)
+#print(array1,array2)
+
+
 for digit in x_minus_one_digit:
     x_digit=digit+1
     x_minus_one_digit=digit
@@ -144,6 +160,7 @@ for digit in x_minus_one_digit:
         print(a,end='\n')
     for a in array2:
         print(a,end='\n')
-    print('Length of CountArray for Prices is ',len(array1),' with ',x_digit,' & ',x_minus_one_digit,' digit')
-    print('Length of CountArray for Names is ',len(array2),' with ',x_digit,' & ',x_minus_one_digit,' digit')
-'''
+    #print('Length of CountArray for Prices is ',len(array1),' with ',x_digit,' & ',x_minus_one_digit,' digit')
+    #print('Length of CountArray for Names is ',len(array2),' with ',x_digit,' & ',x_minus_one_digit,' digit')
+    print('-------------------------------------------------------------')
+
