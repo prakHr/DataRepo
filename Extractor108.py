@@ -56,8 +56,8 @@ def extractionFromBarcodesCollection(b_collection,path):
         if flag2==True:nowTime=time.time();nowTime=math.ceil(nowTime*1000);ts=str(nowTime);reasons.append(['Number',pathDash,ts])
         if flag3==True:nowTime=time.time();nowTime=math.ceil(nowTime*1000);ts=str(nowTime);reasons.append(['Price',pathDash,ts])
         if flag4==True:nowTime=time.time();nowTime=math.ceil(nowTime*1000);ts=str(nowTime);reasons.append(['Modified',pathDash,ts])
+
             
-    
         if flag1==True and flag2==True and flag3==True and flag4==True:#gonna be 2<<3 cases i.e. 16 cases
             name,number,price,modified='','',[0],''
         elif flag1==True and flag2==True and flag3==False and flag4==True:name,number,price,modified='','',my_dict['price'],''
@@ -84,16 +84,17 @@ DocumentsArray=Extractor(db2.collection(u'Kiranas'))
 
 #function takes database,a array,a name of main collection,id to transfer at and inventory as input and set documents according to array in database
 def editCollection(database,array,main_collection,idToTransferAt,inventory):
-    for [a,b] in array:
-        ids,my_dict=a,b
+    for doc in array:
+        ids,my_dict=doc[0],doc[1]
         database.collection(main_collection).document(idToTransferAt).collection(inventory).document(ids).set(my_dict)
     
 for doc in DocumentsArray:
     ids,my_dict=doc[0],doc[1]
     if 'transferTo' in my_dict:
+        
         idToTransferAtdb1=my_dict['transferTo']
-        #if transferTo doesn't contain +91,then
-        #idToTransferAtdb1='+91'+my_dict['transferTo']
+        if idToTransferAtdb1[0:3]!='+91':#if transferTo doesn't contain +91,then
+            idToTransferAtdb1='+91'+my_dict['transferTo']
         
         BarcodesCollection=db2.collection(u'Kiranas').document(ids).collection(u'Barcodes').get()    
         SpeechItemsCollection=db2.collection(u'Kiranas').document(ids).collection(u'SpeechItems').get()
