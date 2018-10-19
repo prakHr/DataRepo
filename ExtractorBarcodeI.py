@@ -124,6 +124,8 @@ def similarity(bLen_minus_one_digit,bLen_digit,barcodes,priceDict,nameDict):
                     flag=True
                 if Dict[a]==Dict[b]:
                     Array.append([Dict[a],a,b,flag])
+                    flag=False
+                flag=False
         return Array
 
     set1,set2=bLen_minus_one_digit_set,bLen_digit_set
