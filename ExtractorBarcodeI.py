@@ -3,10 +3,10 @@ from firebase_admin import *
 from firebase_admin import firestore
 import time
 from datetime import timedelta
-#in name remove spaces
-cred1=credentials.Certificate("munshik3-46360-firebase-adminsdk-d1ymf-4358fc0962.json")
-#'8906014763295', '88901262151863'
 
+cred1=credentials.Certificate("munshik3-46360-firebase-adminsdk-d1ymf-4358fc0962.json")
+
+#function takes the credentials(=>input) and gives reference address to database(=>db)
 def extractDatabase(cred):
     app=firebase_admin.initialize_app(cred)
     db=firestore.client()
@@ -22,6 +22,7 @@ barcode_inventory_ref=db1.collection(u'barcode_inventory')
 barcodes_set,barcodes_array=set(),[]
 first_two_digit_barcodes_array=[]
 
+#for loop takes first 2 digits of barcodes in an array(not set to use for count),and a array of barcodes for similar purpose 
 for doc in barcode_inventory_docs:
     b=doc.id
     b=b.lower()
@@ -55,13 +56,11 @@ for b in barcodes_set:
     if b[-1]==b[-2]:
         sameLastTwoDigitArraySet.add((b[-1]*2,len(b)))
 
-#print('sameLastTwoDigitArraySet=>',sameLastTwoDigitArraySet)
-#print('count of same last 2 digit is :-'+,len(sameLastTwoDigitArraySet))
 print('countOfSameFirstTwoDigit :-',countOfSameFirstTwoDigit)
 
 sameFirstTwoDigit=set()
-#print('sameFirstTwoDigitArraySet=>',sameFirstTwoDigitArraySet)
 
+#same first 2 digits are taken into array from array set
 sameFirstTwoDigitArray=set()
 for (a,b) in sameFirstTwoDigitArraySet:
     sameFirstTwoDigitArray.add(a)
@@ -115,21 +114,14 @@ def similarity(bLen_minus_one_digit,bLen_digit,barcodes,priceDict,nameDict):
         Array=[]
         for a in set1:
             count,flag=0,False
-
             if a not in Dict:
                 continue
-
-            #if b==a[:-1] or b==a[1:]:flag=True
-            #if a==b[:-1] or a==b[1:]:flag=True
-
             for b in set2:
-
                 if b not in Dict:
                     continue
-
+               #if (a==b[:-1] or a==b[1:]):
                 if (b==a[:-1] or b==a[1:]):
                     flag=True
-
                 if Dict[a]==Dict[b]:
                     Array.append([Dict[a],a,b,flag])
         return Array
