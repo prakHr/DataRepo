@@ -110,6 +110,8 @@ def similarity(bLen_minus_one_digit,bLen_digit,barcodes,priceDict,nameDict):
         if len(b)==bLen_digit:
             bLen_digit_set.add(b)
 
+    n=bLen_digit-bLen_minus_one_digit
+    
     def function(set1,set2,Dict):
         Array=[]
         for a in set1:
@@ -120,7 +122,7 @@ def similarity(bLen_minus_one_digit,bLen_digit,barcodes,priceDict,nameDict):
                 if b not in Dict:
                     continue
                #if (a==b[:-1] or a==b[1:]):
-                if (b==a[:-1] or b==a[1:]):
+                if (b==a[:-n] or b==a[n:]):
                     flag=True
                 if Dict[a]==Dict[b]:
                     Array.append([Dict[a],a,b,flag])
@@ -132,6 +134,27 @@ def similarity(bLen_minus_one_digit,bLen_digit,barcodes,priceDict,nameDict):
     CountArrayForPrices,CountArrayForNames=function(set1,set2,priceDict),function(set1,set2,nameDict)
     return CountArrayForPrices,CountArrayForNames
 
+
+second_digits_array=[(12,14),(11,13),(10,12),(13,15),(14,16)]
+for (a1,b1) in second_digits_array:
+    array1,array2=similarity(a,b,barcodes_set,barcodesPriceDict,barcodesNameDict)
+    count=0
+    for a in array1:
+        print(a,end='\n')
+        if a[3]==True:
+            count+=1
+    print('count of substring similarity of barcode for digit ',a1,' with digit ',b1,' is ',count)
+    print('Length of CountArray for Prices is ',len(array1),' with ',a1,' & ',b1,' digit')
+    count=0
+    for a in array2:
+        print(a,end='\n')
+        if a[3]==True:
+            count+=1
+    print('Length of CountArray for Names is ',len(array2),' with ',a1,' & ',b1,' digit')
+    print('-------------------------------------------------------------')
+
+
+    
 x_minus_one_digit=[3,4,5,6,7,8,9,10,11,12,13,14,15]#since barcodes_len_set has corresponding digits+1 of {4,5,6,7,8,9,10,11,12,13,14,15,16}
 
 
@@ -154,4 +177,5 @@ for digit in x_minus_one_digit:
             count+=1
     print('Length of CountArray for Names is ',len(array2),' with ',x_digit,' & ',x_minus_one_digit,' digit')
     print('-------------------------------------------------------------')
+
 
