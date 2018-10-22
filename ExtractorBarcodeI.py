@@ -34,7 +34,7 @@ for doc in barcode_inventory_docs:
 barcodes_len_set=set()
 for b in barcodes_set:
     barcodes_len_set.add(len(b))
-print('barcodes_len_set=>',barcodes_len_set)
+#print('barcodes_len_set=>',barcodes_len_set)
 
 #for loop counts the number of barcodes using its length
 for l in barcodes_len_set:
@@ -42,7 +42,7 @@ for l in barcodes_len_set:
     for b in barcodes_array:
         if len(b)==l:
             count+=1
-    print('length of barcode',l,'total :',count)
+    #print('length of barcode',l,'total :',count)
 
 #for loops keeps barcodes with first 2 and last 2 same digits into an arraySet=>(DoubleDigit,len(corresponding_barcode))
 sameLastTwoDigitArraySet,sameFirstTwoDigitArraySet,countOfSameFirstTwoDigit=set(),set(),0
@@ -56,7 +56,7 @@ for b in barcodes_set:
     if b[-1]==b[-2]:
         sameLastTwoDigitArraySet.add((b[-1]*2,len(b)))
 
-print('countOfSameFirstTwoDigit :-',countOfSameFirstTwoDigit)
+#print('countOfSameFirstTwoDigit :-',countOfSameFirstTwoDigit)
 
 sameFirstTwoDigit=set()
 
@@ -65,7 +65,7 @@ sameFirstTwoDigitArray=set()
 for (a,b) in sameFirstTwoDigitArraySet:
     sameFirstTwoDigitArray.add(a)
 
-print('sameFirstTwoDigitArray=>',sameFirstTwoDigitArray)
+#print('sameFirstTwoDigitArray=>',sameFirstTwoDigitArray)
 CountsOfSameTwoDigit=[]
 
 for a in sameFirstTwoDigitArray:
@@ -75,7 +75,7 @@ for a in sameFirstTwoDigitArray:
             count+=1
     CountsOfSameTwoDigit.append([count,a])
 
-print('CountsOfSameTwoDigit=>',CountsOfSameTwoDigit)
+#print('CountsOfSameTwoDigit=>',CountsOfSameTwoDigit)
 
 #function takes database(optional args, not necessary) and reference of main collection as input and then gives an array of [[barcodeNumber1,lower(barcodeName1),barcodePrice1],...]
 #other outputs are :-a price dictionary of key-value pair as {(barcodeNumber1,lower(barcodePrice1)),(barcodeNumber2,lower(barcodePrice2))..}, a name dictionary of key-value pair as {(barcodeNumber1,lower(barcodeName1)),(barcodeNumber2,lower(barcodeName2))...}
@@ -126,7 +126,7 @@ def similarity(bLen_minus_one_digit,bLen_digit,barcodes,priceDict,nameDict,switc
                     flag=True
                 if Dict1[a]!=Dict1[b] and Dict2[a]!=Dict2[b]:
                     if flag==True:
-                        Array.append([Dict1[a],Dict1[b],Dict2[a],Dict2[b],a,b,flag])#flag comes True is showing correctly
+                        Array.append([Dict1[a],Dict1[b],Dict2[a],Dict2[b],a,b])#flag comes True is showing correctly
                     flag=False
                 flag=False
         return Array
@@ -145,12 +145,12 @@ def similarity(bLen_minus_one_digit,bLen_digit,barcodes,priceDict,nameDict,switc
                 if (b==a[:-1] or b==a[1:]):flag=True
                 if Dict1[a]!=Dict1[b] and Dict2[a]==Dict2[b]:
                     if flag==True:
-                        Array.append([Dict1[a],Dict2[a],a,b,flag])
+                        Array.append([Dict1[a],Dict1[b],Dict2[a],Dict2[b],a,b])
                     flag=False
                 flag=False
         return Array
 
-    #number of substrings in which only barcodesPrice are same
+    #number of substrings in which only barcodesPrices are same
     def function2(set1,set2,Dict1,Dict2):
         Array=[]
         for a in set1:
@@ -164,12 +164,12 @@ def similarity(bLen_minus_one_digit,bLen_digit,barcodes,priceDict,nameDict,switc
                 if (b==a[:-1] or b==a[1:]):flag=True
                 if Dict1[a]==Dict1[b] and Dict2[a]!=Dict2[b]:
                     if flag==True:
-                        Array.append([Dict1[a],Dict2[a],a,b,flag])
+                        Array.append([Dict1[a],Dict1[b],Dict2[a],Dict2[b],a,b])
                     flag=False
                 flag=False
         return Array
 
-    #number of substrings in which both barcodesPrice and barcodeNames are same
+    #number of substrings in which both barcodesPrices and barcodeNames are same
     def function1(set1,set2,Dict1,Dict2):
         Array=[]
         for a in set1:
@@ -183,7 +183,7 @@ def similarity(bLen_minus_one_digit,bLen_digit,barcodes,priceDict,nameDict,switc
                 if (b==a[:-1] or b==a[1:]):flag=True
                 if Dict1[a]==Dict1[b] and Dict2[a]==Dict2[b]:
                     if flag==True:
-                        Array.append([Dict1[a],Dict2[a],a,b,flag])
+                        Array.append([Dict1[a],Dict1[b],Dict2[a],Dict2[b],a,b])
                     flag=False
                 flag=False
         return Array
@@ -201,7 +201,7 @@ def similarity(bLen_minus_one_digit,bLen_digit,barcodes,priceDict,nameDict,switc
                     flag=True
                 if Dict[a]==Dict[b]:
                     if flag==True:
-                        Array.append([Dict[a],a,b,flag])
+                        Array.append([Dict[a],a,b])
                     flag=False
                 flag=False
         return Array
@@ -229,49 +229,45 @@ x_minus_one_digit_array=[3,4,5,6,7,8,9,10,11,12,13,14,15]
 second_digits_array=[(12,14),(11,13),(10,12),(13,15),(14,16)]
 cases=[1,2,3]
 numberZero,numberFour=0,4
-
+print('----------------------------------------------------')
 def PrintTwoDifferenceArrayForfunction(second_digits_array,barcodes_set,barcodesPriceDict,barcodesNameDict,switchCase):
     for (a1,b1) in second_digits_array:
         array1,array2=similarity(a1,b1,barcodes_set,barcodesPriceDict,barcodesNameDict,switchCase)
         count=0
         for a in array1:
-            print(a,end='\n')
-            if a[3]==True:
-                count+=1
-        print('count of substring similarity of barcode for digit ',a1,' with digit ',b1,' is ',count)
-        print('Length of CountArray for Prices is ',len(array1),' with ',a1,' & ',b1,' digit')
+            print(a[0],',',a[1],',',a[2])
+            count+=1
+        #print('count of substring similarity of barcode for digit ',a1,' with digit ',b1,' is ',count)
+        #print('Length of CountArray for Prices is ',len(array1),' with ',a1,' & ',b1,' digit')
         count=0
         for a in array2:
-            print(a,end='\n')
-            if a[3]==True:
-                count+=1
-        print('count of substring similarity of barcode for digit ',a1,' with digit ',b1,' is ',count)
-        print('Length of CountArray for Prices is ',len(array1),' with ',a1,' & ',b1,' digit')
-        print('-------------------------------------------------------------')
-       
+            print(a[0],',',a[1],',',a[2])
+            count+=1
+        #print('count of substring similarity of barcode for digit ',a1,' with digit ',b1,' is ',count)
+        #print('Length of CountArray for Prices is ',len(array1),' with ',a1,' & ',b1,' digit')
+        #print('-------------------------------------------------------------')
+print('Here')
 PrintTwoDifferenceArrayForfunction(second_digits_array,barcodes_set,barcodesPriceDict,barcodesNameDict,numberZero)
 
 #to run function for digits with difference 1
 def PrintOneDifferenceArrayForfunction(x_minus_one_digit_array,barcodes_set,barcodesPriceDict,barcodesNameDict,switchCase):
-    for digit in x_minus_one_digit:
+    for digit in x_minus_one_digit_array:
         x_digit=digit+1
         x_minus_one_digit=digit
         array1,array2=similarity(x_digit,x_minus_one_digit,barcodes_set,barcodesPriceDict,barcodesNameDict,switchCase)
         count=0
         for a in array1:
-            print(a,end='\n')
-            if a[3]==True:
-                count+=1
-        print('count of substring similarity of barcode for digit ',x_digit,' with digit ',x_minus_one_digit,' is ',count)
-        print('Length of CountArray for Prices is ',len(array1),' with ',x_digit,' & ',x_minus_one_digit,' digit')
+            print(a[0],',',a[1],',',a[2])
+            count+=1
+        #print('count of substring similarity of barcode for digit ',x_digit,' with digit ',x_minus_one_digit,' is ',count)
+        #print('Length of CountArray for Prices is ',len(array1),' with ',x_digit,' & ',x_minus_one_digit,' digit')
         count=0
         for a in array1:
-            print(a,end='\n')
-            if a[3]==True:
-                count+=1
-        print('Length of CountArray for Prices is ',len(array1),' with ',x_digit,' & ',x_minus_one_digit,' digit')
-        print('-------------------------------------------------------------')
-
+            print(a[0],',',a[1],',',a[2])
+            count+=1
+        #print('Length of CountArray for Prices is ',len(array1),' with ',x_digit,' & ',x_minus_one_digit,' digit')
+        #print('-------------------------------------------------------------')
+print('Here')
 PrintOneDifferenceArrayForfunction(x_minus_one_digit_array,barcodes_set,barcodesPriceDict,barcodesNameDict,numberZero)
 
 #to run function1, function2, function3 for digits with difference 2
@@ -280,45 +276,44 @@ def PrintTwoDifferenceArrayForfunction_1_2_3(second_digits_array,barcodes_set,ba
         array1=similarity(a1,b1,barcodes_set,barcodesPriceDict,barcodesNameDict,switchCase)
         count=0
         for a in array1:
-            print(a,end='\n')
-            if a[4]==True:
-                count+=1
-        print('count of substring similarity of barcode for digit ',a1,' with digit ',b1,' is ',count)
-        print('Length of CountArray for Prices is ',len(array1),' with ',a1,' & ',b1,' digit')
+            print(a[0],',',a[1],',',a[2],',',a[3],',',a[4],',',a[5])
+            count+=1
+        #print('count of substring similarity of barcode for digit ',a1,' with digit ',b1,' is ',count)
+        #print('Length of CountArray for Prices is ',len(array1),' with ',a1,' & ',b1,' digit')
 
 for c in cases:
+    print('Here')
     PrintTwoDifferenceArrayForfunction_1_2_3(second_digits_array,barcodes_set,barcodesPriceDict,barcodesNameDict,c)
 
 #to run function1, function2, function3 for digits with difference 1
 def PrintOneDifferenceArrayForfunction_1_2_3(x_minus_one_digit_array,barcodes_set,barcodesPriceDict,barcodesNameDict,switchCase):
-    for digit in x_minus_one_digit:
+    for digit in x_minus_one_digit_array:
         x_digit=digit+1
         x_minus_one_digit=digit
         array1=similarity(x_digit,x_minus_one_digit,barcodes_set,barcodesPriceDict,barcodesNameDict,switchCase)
         count=0
         for a in array1:
-            print(a,end='\n')
-            if a[4]==True:
-                count+=1
-        print('count of substring similarity of barcode for digit ',x_digit,' with digit ',x_minus_one_digit,' is ',count)
-        print('Length of CountArray for Prices is ',len(array1),' with ',x_digit,' & ',x_minus_one_digit,' digit')
+            print(a[0],',',a[1],',',a[2],',',a[3],',',a[4],',',a[5])
+            count+=1
+        #print('count of substring similarity of barcode for digit ',x_digit,' with digit ',x_minus_one_digit,' is ',count)
+        #print('Length of CountArray for Prices is ',len(array1),' with ',x_digit,' & ',x_minus_one_digit,' digit')
 
 for c in cases:
+    print('Here')
     PrintOneDifferenceArrayForfunction_1_2_3(x_minus_one_digit_array,barcodes_set,barcodesPriceDict,barcodesNameDict,c)
     
 #to run function4 for digits with difference 1
 def PrintOneDifferenceArrayForfunction_4(x_minus_one_digit_array,barcodes_set,barcodesPriceDict,barcodesNameDict,switchCase):
-    for digit in x_minus_one_digit:
+    for digit in x_minus_one_digit_array:
         x_digit=digit+1
         x_minus_one_digit=digit
         array1=similarity(x_digit,x_minus_one_digit,barcodes_set,barcodesPriceDict,barcodesNameDict,switchCase)
         count=0
         for a in array1:
-            print(a,end='\n')
-            if a[6]==True:
-                count+=1
-        print('count of substring similarity of barcode for digit ',x_digit,' with digit ',x_minus_one_digit,' is ',count)
-        print('Length of CountArray for Prices is ',len(array1),' with ',x_digit,' & ',x_minus_one_digit,' digit')
+            print(a[0],',',a[1],',',a[2],',',a[3],',',a[4],',',a[5])
+            count+=1
+        #print('count of substring similarity of barcode for digit ',x_digit,' with digit ',x_minus_one_digit,' is ',count)
+        #print('Length of CountArray for Prices is ',len(array1),' with ',x_digit,' & ',x_minus_one_digit,' digit')
 
 PrintOneDifferenceArrayForfunction_4(x_minus_one_digit_array,barcodes_set,barcodesPriceDict,barcodesNameDict,numberFour)
 
@@ -328,10 +323,9 @@ def PrintTwoDifferenceArrayForfunction_4(second_digits_array,barcodes_set,barcod
         array1=similarity(a1,b1,barcodes_set,barcodesPriceDict,barcodesNameDict,switchCase)
         count=0
         for a in array1:
-            print(a,end='\n')
-            if a[6]==True:
-                count+=1
-        print('count of substring similarity of barcode for digit ',a1,' with digit ',b1,' is ',count)
-        print('Length of CountArray for Prices is ',len(array1),' with ',a1,' & ',b1,' digit')
-
+            print(a[0],',',a[1],',',a[2],',',a[3],',',a[4],',',a[5])
+            count+=1
+        #print('count of substring similarity of barcode for digit ',a1,' with digit ',b1,' is ',count)
+        #print('Length of CountArray for Prices is ',len(array1),' with ',a1,' & ',b1,' digit')
+print('Here')
 PrintTwoDifferenceArrayForfunction_4(second_digits_array,barcodes_set,barcodesPriceDict,barcodesNameDict,numberFour)
