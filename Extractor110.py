@@ -12,15 +12,8 @@ def extractDatabase(cred):
     return db
 db1=extractDatabase(cred1)
 # variables to store the collection names
-collection1,collection2,collection3,collection4,collection5,collection6,collection7,collection8,collection9=u'barcode_inventory',u'barcode_repeats',u'bills',u'customers',u'speech_inventory',u'tags',u'unlisted_barcode_inventory',u'users',u'barcode_repeats'
-usersCollection1,usersCollection2,usersCollection3,usersCollection4=collection1,collection3,collection4,collection5
-billsCollection1=u'sold'
-collectionsOfUsersCollection3=[u'payment',u'paid',u'udhaar']
-collectionOfUsersCollection2=u'sold'
-collectionsOfUsersCollection4=u'speechInventoryPrice'
-collectionOfSpeechInventoryPrice=u'records'
-collectionOfRecords=[u'price',u'stock']
-ref1,ref2,ref3,ref4,ref5,ref6,ref7,ref8,ref9=db1.collection(collection1),db1.collection(collection2),db1.collection(collection3),db1.collection(collection4),db1.collection(collection5),db1.collection(collection6),db1.collection(collection7),db1.collection(collection8),db1.collection(collection9)
+collection1,collection8=u'barcode_inventory',u'users'
+ref1,ref8=db1.collection(collection1),db1.collection(collection8)
 #titleCasing the barcodeName iff(if and only if) present in dictionary
 def updateBarcodeNames(collection,reference,database):
     docs,array=reference.get(),[]
