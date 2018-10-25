@@ -14,9 +14,9 @@ def extractDatabase(cred):
     return db
 db1=extractDatabase(cred1)
 
-collection1=u'barcode_inventory'
-ref1=db1.collection(collection1)
-
+collection1,collection8=u'barcode_inventory',u'users'
+ref1,ref8=db1.collection(collection1),db1.collection(collection8)
+'''
 #update timestamp
 def updateTimestamp(collection,reference):
     docs=reference.get()
@@ -29,7 +29,32 @@ def updateTimestamp(collection,reference):
             db1.collection(collection).document(RandomId).update(field_updates)
 
 updateTimestamp(collection1,ref1)
+'''
+#input is main_collection and output is ids of random documents stored in a array
+def storesDocumentIdIntoArrayAndSetsDatabase(collection,reference,database):
+    docs,array=reference.get(),[]
+    for doc in docs:
+        array.append(doc.id)
+        database.collection(collection).document(doc.id).set(doc.to_dict())
+    return array
 
+usersArray=storesDocumentIdIntoArrayAndSetsDatabase(collection8,ref8,db1)
+
+for randomId in usersArray:
+    
+    BarcodeInventoryCollection=db1.collection(collection8).document(randomId).collection(collection1)
+    ref=BarcodeInventoryCollection.get()
+    for doc in ref:
+        ids=doc.id
+        my_dict=doc.to_dict()
+        if 'timestamp' not in my_dict:
+            field_updates={
+                'timestamp':1514745000000,
+            }
+            #BarcodeInventoryCollection..document(ids).update(field_updates)
+            db1.collection(collection8).document(randomId).collection(collection1).document(ids).update(field_updates)
+
+            
 '''
 #remove spaces from barcode_inventory
 def removeSpaces(collection,reference):
