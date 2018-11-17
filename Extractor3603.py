@@ -1,10 +1,5 @@
-#Code doesn't account for changing database so empty spaces preferred not to remove or do it manually
-from bs4 import BeautifulSoup as BS 
 import requests,lxml.html
 from lxml import etree
-from io import BytesIO
-import re
-
 
 Paragraphs=[]
 count=0
@@ -38,6 +33,7 @@ def fetchUrlAndgivePhoneNo(url):
     html = requests.get(url, headers=agent)
     doc = lxml.html.fromstring(html.content)
     el=doc.xpath("//p[@class='contact-info ']")
+
     for e in el:
         tree=(etree.tostring(e, encoding='unicode'))
         parsed=etree.fromstring(tree)
@@ -48,8 +44,7 @@ def fetchUrlAndgivePhoneNo(url):
             phoneNo=getPhoneNo(nodes2)
         elif nodes2 ==[]:
             phoneNo=getPhoneNo(nodes1)
-        #elif nodes1==[] and nodes2==[]:
-          #  phoneNo='empty'
+
         Paragraphs.append(phoneNo)
     return Paragraphs
 
@@ -61,8 +56,15 @@ def aSinglePageContent(pageNo):
     for n in phoneNumbers:
         print(n)
 
-for pages in range(1,50+1):
-    SinglePageContent(pages)
+
+while True:
+    pageNumber=input('press q to quit or give a valid input an integer in between 1 to 50:-')
+    if pageNumber=='q':break
+    else:aSinglePageContent(pageNumber)
+
+#totalPages=int(input())
+#for pages in range(1,1+totalPages):
+  #  SinglePageContent(pages)
 
     
 
