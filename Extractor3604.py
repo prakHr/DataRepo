@@ -19,7 +19,7 @@ MainCList=['barcode_inventory','barcode_repeats',
           'speech_inventory','tags',
           'unlisted_barcode_inventory'
           ]
-cred1=credentials.Certificate("project1-4e7b7-firebase-adminsdk-7irgt-433da006ab.json")
+cred1=credentials.Certificate("????????")
 def extractDatabase(cred):
     app=firebase_admin.initialize_app(cred)
     db=firestore.client()
