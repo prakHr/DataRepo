@@ -89,13 +89,18 @@ for (_,size) in usersPaths:
 print(TotalUserPathSize+MainCollectionUsersFieldDataSize+SubCollectionUsersFieldDataSize)#2344006=?+5079+1614480
 print(MainCollectionUsersFieldDataSize)#5079
 print(SubCollectionUsersFieldDataSize)#1614480
-print('BytesToMiB_Conversion =>'+str(BytesToMiB_Conversion(MainCollectionUsersFieldDataSize)))
-print('MiBToBytes_Conversion =>'+str(MiBToBytes_Conversion(MainCollectionUsersFieldDataSize)))
-    
-print('BytesToMiB_Conversion =>'+str(BytesToMiB_Conversion(SubCollectionUsersFieldDataSize)))
-print('MiBToBytes_Conversion =>'+str(MiBToBytes_Conversion(SubCollectionUsersFieldDataSize)))
-    
+print('BytesToMiB_Conversion =>'+str(BytesToMiB_Conversion(MainCollectionUsersFieldDataSize)))    
+print('BytesToMiB_Conversion =>'+str(BytesToMiB_Conversion(SubCollectionUsersFieldDataSize)))    
 print('BytesToMiB_Conversion =>'+str(BytesToMiB_Conversion(TotalUserPathSize)))
-print('MiBToBytes_Conversion =>'+str(MiBToBytes_Conversion(TotalUserPathSize)))
+
+'''
+2344006
+5079
+1614480
+BytesToMiB_Conversion =>0.0048417540514775976
+BytesToMiB_Conversion =>1.53906577693041
+BytesToMiB_Conversion =>0.6906072449952335
+
+'''
 
 
