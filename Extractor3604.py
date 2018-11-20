@@ -127,17 +127,13 @@ for (_,b) in billsPathSize:
     
 print('TotalBillsPathSize=>'+str(TotalBillsPathSize))
 print('BytesToMiB_Conversion =>'+str(BytesToMiB_Conversion(TotalBillsPathSize)))
-print('MiBToBytes_Conversion =>'+str(MiBToBytes_Conversion(TotalBillsPathSize)))
 
 print('billsByteSize=>'+str(billsByteSize))
 print('BytesToMiB_Conversion =>'+str(BytesToMiB_Conversion(billsByteSize)))
-print('MiBToBytes_Conversion =>'+str(MiBToBytes_Conversion(billsByteSize)))
+
 '''
 TotalBillsPathSize=>39
 BytesToMiB_Conversion =>3.717826501429933e-05
-MiBToBytes_Conversion =>40911000.0
-
 billsByteSize=>273
 BytesToMiB_Conversion =>0.00026024785510009535
-MiBToBytes_Conversion =>286377000.0
 '''
