@@ -5,6 +5,16 @@ from datetime import datetime
 import datetime
 import google.cloud
 
+def MiBToBytes_Conversion(mib):
+    One_mib_in_bytes=1049000.0
+    converted_bytes=mib*One_mib_in_bytes
+    return converted_bytes
+
+def BytesToMiB_Conversion(mib_bytes):
+    One_mib_in_bytes=1049000.0
+    converted_mib=mib_bytes/One_mib_in_bytes
+    return converted_mib
+
 def utf8len(s):
     return 1+len(s.encode('utf-8'))#returns 1+utf-8 in accordance to https://firebase.google.com/docs/firestore/storage-size
 
@@ -79,5 +89,13 @@ for (_,size) in usersPaths:
 print(TotalUserPathSize+MainCollectionUsersFieldDataSize+SubCollectionUsersFieldDataSize)#2344006=?+5079+1614480
 print(MainCollectionUsersFieldDataSize)#5079
 print(SubCollectionUsersFieldDataSize)#1614480
+print('BytesToMiB_Conversion =>'+str(BytesToMiB_Conversion(MainCollectionUsersFieldDataSize)))
+print('MiBToBytes_Conversion =>'+str(MiBToBytes_Conversion(MainCollectionUsersFieldDataSize)))
     
+print('BytesToMiB_Conversion =>'+str(BytesToMiB_Conversion(SubCollectionUsersFieldDataSize)))
+print('MiBToBytes_Conversion =>'+str(MiBToBytes_Conversion(SubCollectionUsersFieldDataSize)))
     
+print('BytesToMiB_Conversion =>'+str(BytesToMiB_Conversion(TotalUserPathSize)))
+print('MiBToBytes_Conversion =>'+str(MiBToBytes_Conversion(TotalUserPathSize)))
+
+
