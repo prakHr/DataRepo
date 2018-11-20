@@ -70,18 +70,21 @@ usersCollections=[u'barcode_inventory'
 usersPaths=[]
 
 for randomId in usersArray:
- 
-    for collection in usersCollections:
+    if randomId!='+919777688639':
+        continue
+    for collection in ['speech_inventory']:
         Array=[]
         for doc in db1.collection(usersCollection).document(randomId).collection(collection).get():
             SubCollectionUsersFieldDataSize+=SizeAccordingToType(doc.to_dict())
             Array.append(doc.id)
-        #print(Array)
+        print(Array)
+            
         for randomId2 in Array:
             pathSize=utf8len(usersCollection)+utf8len(randomId)+utf8len(collection)+utf8len(randomId2)+additionalBytes
             usersPaths.append(('/'+usersCollection+'/'+randomId+'/'+collection+'/'+randomId2,pathSize))
-  
-#print(usersPaths)
+            
+        
+print(usersPaths)
 
 TotalUserPathSize=0
 for (_,size) in usersPaths:
@@ -99,6 +102,7 @@ print('BytesToMiB_Conversion =>'+str(BytesToMiB_Conversion(TotalUserPathSize)))
 1614480
 BytesToMiB_Conversion =>0.0048417540514775976
 BytesToMiB_Conversion =>1.53906577693041
+
 BytesToMiB_Conversion =>0.6906072449952335
 
 '''
