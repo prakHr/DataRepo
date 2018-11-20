@@ -9,6 +9,16 @@ from datetime import datetime
 import datetime
 import google.cloud
 
+def MiBToBytes_Conversion(mib):
+    One_mib_in_bytes=1049000.0
+    converted_bytes=mib*One_mib_in_bytes
+    return converted_bytes
+
+def BytesToMiB_Conversion(mib_bytes):
+    One_mib_in_bytes=1049000.0
+    converted_mib=mib_bytes/One_mib_in_bytes
+    return converted_mib
+
 def utf8len(s):
     return 1+len(s.encode('utf-8'))
 #remaining collection bills,
@@ -21,7 +31,7 @@ MainCList=['barcode_inventory','barcode_repeats',
           'speech_inventory','tags',
           'unlisted_barcode_inventory'
           ]
-cred1=credentials.Certificate("?????")
+cred1=credentials.Certificate("project1-4e7b7-firebase-adminsdk-7irgt-433da006ab.json")
 def extractDatabase(cred):
     app=firebase_admin.initialize_app(cred)
     db=firestore.client()
@@ -60,7 +70,7 @@ for p in MainCList:
     totalPathSize=0
     pathsOfRandomDocs=[]
     for doc in Array:
-        pathSize=utf8len(p)+utf8len(doc)+additionalBytes#16+10+21
+        pathSize=(utf8len(p)+utf8len(doc)+additionalBytes)
         pathsOfRandomDocs.append(('/'+p+'/'+doc,pathSize))
         totalPathSize+=pathSize
     CollectionsPathSize.append(totalPathSize)
@@ -96,8 +106,8 @@ for (x,y) in zip(CollectionsFieldSize,MainCList):
 
 billsByteSize,billsId=0,[]
 for doc in db1.collection(BillsCollection).get():
-    print(SizeAccordingToType(doc.to_dict()))
-    print(doc.to_dict())
+    #print(SizeAccordingToType(doc.to_dict()))
+    #print(doc.to_dict())
     billsByteSize+=SizeAccordingToType(doc.to_dict())
     billsId.append(doc.id)
 
@@ -112,13 +122,22 @@ for randomId in billsId:
         billsPathSize.append(('/'+BillsCollection+'/'+randomId+'/'+b+'/'+doc.id,pathSize))
         
 TotalBillsPathSize=0
-
 for (_,b) in billsPathSize:
     TotalBillsPathSize+=b
     
 print('TotalBillsPathSize=>'+str(TotalBillsPathSize))
+print('BytesToMiB_Conversion =>'+str(BytesToMiB_Conversion(TotalBillsPathSize)))
+print('MiBToBytes_Conversion =>'+str(MiBToBytes_Conversion(TotalBillsPathSize)))
+
 print('billsByteSize=>'+str(billsByteSize))
+print('BytesToMiB_Conversion =>'+str(BytesToMiB_Conversion(billsByteSize)))
+print('MiBToBytes_Conversion =>'+str(MiBToBytes_Conversion(billsByteSize)))
 '''
 TotalBillsPathSize=>39
+BytesToMiB_Conversion =>3.717826501429933e-05
+MiBToBytes_Conversion =>40911000.0
+
 billsByteSize=>273
+BytesToMiB_Conversion =>0.00026024785510009535
+MiBToBytes_Conversion =>286377000.0
 '''
