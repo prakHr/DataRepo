@@ -1,11 +1,13 @@
-#Type
+#Type(Not taken into account are)
 #Bytes
-#Date and time
 #Geographical point
 #Reference
 import firebase_admin
 from firebase_admin import *
 from firebase_admin import firestore
+from datetime import datetime
+import datetime
+import google.cloud
 
 def utf8len(s):
     return 1+len(s.encode('utf-8'))
@@ -19,7 +21,7 @@ MainCList=['barcode_inventory','barcode_repeats',
           'speech_inventory','tags',
           'unlisted_barcode_inventory'
           ]
-cred1=credentials.Certificate("????????")
+cred1=credentials.Certificate("?????")
 def extractDatabase(cred):
     app=firebase_admin.initialize_app(cred)
     db=firestore.client()
@@ -27,8 +29,10 @@ def extractDatabase(cred):
     return db
 db1=extractDatabase(cred1)
 
-def SizeAccordingToType(types,size=0):#right now accounts for int,str,bool,list,map,null
-    if type(types)==None:
+def SizeAccordingToType(types,size=0):#right now accounts for int,str,bool,list,map,null,datetime,timestamp
+    if type(types)==datetime.datetime:
+        size=8
+    elif type(types)==None:
         size=1
     if type(types)==int or type(types)==float:
         size=8
@@ -38,7 +42,7 @@ def SizeAccordingToType(types,size=0):#right now accounts for int,str,bool,list,
         size=1
     elif type(types)==dict:
         for key,value in types.items():
-            size+=SizeAccordingToType(value)
+            size+=(SizeAccordingToType(value)+SizeAccordingToType(key))
     elif type(types)==list:
         for t in types:
             size+=SizeAccordingToType(t)#recursive so need to set maximum recursive depth
@@ -82,21 +86,24 @@ for p in MainCList:
 for (x,y) in zip(CollectionsFieldSize,MainCList):
     print(str(x)+'=>'+str(y))
 '''
-19355=>barcode_inventory
-22905=>barcode_repeats
-22=>customers
-40335=>speech_inventory
-237=>tags
-14384=>unlisted_barcode_inventory
+36400=>barcode_inventory
+44375=>barcode_repeats
+62=>customers
+74612=>speech_inventory
+304=>tags
+29000=>unlisted_barcode_inventory
 '''
+
 billsByteSize,billsId=0,[]
 for doc in db1.collection(BillsCollection).get():
+    print(SizeAccordingToType(doc.to_dict()))
+    print(doc.to_dict())
     billsByteSize+=SizeAccordingToType(doc.to_dict())
     billsId.append(doc.id)
 
 billsPathSize=[]
 billsSubCollection=['sold']
-for randomId in billsId:#/bills/1536820091567/sold/1538557548588
+for randomId in billsId:
     for b in billsSubCollection:
         subCollection=db1.collection(BillsCollection).document(randomId).collection(b).get()
         for doc in subCollection:
@@ -113,5 +120,5 @@ print('TotalBillsPathSize=>'+str(TotalBillsPathSize))
 print('billsByteSize=>'+str(billsByteSize))
 '''
 TotalBillsPathSize=>39
-billsByteSize=>87
+billsByteSize=>273
 '''
