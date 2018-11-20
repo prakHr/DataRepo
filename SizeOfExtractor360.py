@@ -65,26 +65,41 @@ usersArray=ExtractRandomDocIdFromCollectionAndPutIntoArray(db1.collection(usersC
 usersCollections=[u'barcode_inventory'
                   ,u'bills'
                   ,u'customers'
-                  ,u'speech_inventory']
+                  ,u'speech_inventory']#/users/+919777688639/speech_inventory/DQqctA2wSMslh6v0g0ZK/speechInventoryPrice/1538996042795/records/price
+#/users/+919777688639/speech_inventory/DQqctA2wSMslh6v0g0ZK/speechInventoryPrice/1538996042795/records/stock
 
-usersPaths=[]
 
-for randomId in usersArray:
-    if randomId!='+919777688639':
-        continue
-    for collection in ['speech_inventory']:
-        Array=[]
-        for doc in db1.collection(usersCollection).document(randomId).collection(collection).get():
-            SubCollectionUsersFieldDataSize+=SizeAccordingToType(doc.to_dict())
-            Array.append(doc.id)
-        print(Array)
-            
-        for randomId2 in Array:
-            pathSize=utf8len(usersCollection)+utf8len(randomId)+utf8len(collection)+utf8len(randomId2)+additionalBytes
-            usersPaths.append(('/'+usersCollection+'/'+randomId+'/'+collection+'/'+randomId2,pathSize))
-            
-        
-print(usersPaths)
+usersPathForSpeechInventory=[]
+usersCollectionRandomDocArray=ExtractRandomDocIdFromCollectionAndPutIntoArray(db1.collection(u'users'),db1)
+Counter=0
+for id1 in usersCollectionRandomDocArray:
+    
+    for collection in usersCollections:
+        if collection=='users':#detailed analysis in u'users' collection,customers has a payment collection
+            continue
+        elif collection=='customers':
+            u_array1=[]
+            for doc in db1.collection(usersCollection).document(id1).collection(collection).get():
+                SubCollectionUsersFieldDataSize+=SizeAccordingToType(doc.to_dict())
+                u_array1.append(doc.id)
+
+            for id22 in u_array1:
+                
+                for doc in db1.collection(usersCollection).document(randomId).collection(collection).document(id22).collection(u'payment').get():
+                    SubCollectionUsersFieldDataSize+=SizeAccordingToType(doc.to_dict())
+                    pathSize=utf8len(usersCollection)+utf8len(randomId)+utf8len(collection)+utf8len(id22)+utf8len('payments')+additionalBytes
+                    usersPaths.append(('/'+usersCollection+'/'+randomId+'/'+collection+'/'+id22+'/'+'payments',pathSize))
+        else:
+            Array=[]
+            for doc in db1.collection(usersCollection).document(randomId).collection(collection).get():
+                SubCollectionUsersFieldDataSize+=SizeAccordingToType(doc.to_dict())
+                Array.append(doc.id)
+               
+            for randomId2 in Array:
+                pathSize=utf8len(usersCollection)+utf8len(randomId)+utf8len(collection)+utf8len(randomId2)+additionalBytes
+                usersPaths.append(('/'+usersCollection+'/'+randomId+'/'+collection+'/'+randomId2,pathSize))
+#123                   
+print(usersPathForSpeechInventory)
 
 TotalUserPathSize=0
 for (_,size) in usersPaths:
