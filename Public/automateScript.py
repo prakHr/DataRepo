@@ -16,7 +16,7 @@ def fileReader(text_file):
     timeValue=file1.read()
     time_string=timeValue.strip('\n')
     temp=decimal.Decimal(time_string)
-    return float(temp)
+    return float(temp+10)
 
 '''
 print('LENGTH OF LIST:',len(sys.argv))
