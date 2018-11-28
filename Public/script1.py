@@ -6,7 +6,8 @@ import time
 from datetime import timedelta 
 
 cred1=credentials.Certificate("????????????????.json")
-print(cred1)
+
+start_time=time.time()
 
 def extractFromFirebase(cred):
     app=firebase_admin.initialize_app(cred)
@@ -74,7 +75,8 @@ for users in UsersList:
 
         
     
-
+end_time=time.time()-start_time
+print(end_time)
     
 
  
