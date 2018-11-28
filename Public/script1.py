@@ -5,9 +5,9 @@ from firebase_admin import firestore
 import time
 from datetime import timedelta 
 
-cred1=credentials.Certificate("????????????????.json")
-
 start_time=time.time()
+
+cred1=credentials.Certificate("????????????????.json")
 
 def extractFromFirebase(cred):
     app=firebase_admin.initialize_app(cred)
