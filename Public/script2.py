@@ -3,6 +3,7 @@ from firebase_admin import *
 from firebase_admin import firestore
 import time
 from datetime import timedelta
+start_time=time.time()
 
 cred1=credentials.Certificate("?????????.json")
 
@@ -31,5 +32,6 @@ ref6.document(u'SpeechInventoryList').set({'SpeechInventoryList':len(SpeechInven
 ref6.document(u'tagsList').set({'tagsList':len(tagsList)})
 ref6.document(u'unlistedBarcodesList').set({'unlistedBarcodesList':len(unlistedBarcodesList)})
 
-
+end_time=time.time()-start_time
+print(end_time)
 
